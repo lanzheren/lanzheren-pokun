@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>破困定位 · 你卡在哪一爻？</title>
+<title>破困定位 · 5分钟找到你的真实困境</title>
 <style>
   :root {
     --bg: #f7f5f2;
@@ -11,7 +11,7 @@
     --text: #1a1a2e;
     --muted: #6b7280;
     --accent: #c0392b;
-    --accent2: #8e44ad;
+    --accent2: #7c3aed;
     --border: #e5e7eb;
     --shadow: 0 4px 24px rgba(0,0,0,0.06);
     --radius: 16px;
@@ -24,98 +24,82 @@
     line-height: 1.6;
     min-height: 100vh;
   }
+  .container { max-width: 680px; margin: 0 auto; padding: 20px; }
 
-  /* Nav */
-  .nav {
-    padding: 20px 40px;
-    max-width: 800px;
-    margin: 0 auto;
-    font-size: 14px;
-    color: var(--muted);
-    letter-spacing: 2px;
+  /* Trust bar */
+  .trust-bar {
+    display: flex; justify-content: center; gap: 24px;
+    padding: 10px 0 6px;
+    font-size: 12px; color: var(--muted);
+    flex-wrap: wrap;
   }
+  .trust-bar span { display: flex; align-items: center; gap: 4px; }
 
   /* Hero */
   .hero {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 60px 40px 40px;
     text-align: center;
+    padding: 32px 0 20px;
   }
-  .hero-badge {
+  .hero .badge {
     display: inline-block;
-    background: #fce8e6;
-    color: var(--accent);
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 14px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
+    background: #fce8e6; color: var(--accent);
+    font-size: 12px; font-weight: 600;
+    padding: 4px 14px; border-radius: 20px;
+    margin-bottom: 16px;
   }
   .hero h1 {
-    font-size: 42px;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 16px;
-    letter-spacing: -0.5px;
-  }
-  .hero h1 span { color: var(--accent); }
-  .hero p {
-    font-size: 18px;
-    color: var(--muted);
-    max-width: 600px;
-    margin: 0 auto 32px;
-  }
-
-  /* How it works */
-  .steps {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 40px 40px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  .step {
-    background: var(--card);
-    padding: 24px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-  }
-  .step-num {
-    width: 28px; height: 28px;
-    background: var(--accent);
-    color: white;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700;
+    font-size: 36px; font-weight: 700;
+    letter-spacing: -0.5px; line-height: 1.2;
     margin-bottom: 12px;
   }
-  .step h3 { font-size: 15px; margin-bottom: 6px; }
-  .step p { font-size: 13px; color: var(--muted); }
-
-  /* Assessment Section */
-  .assessment {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 0 40px 80px;
+  .hero h1 span { color: var(--accent); }
+  .hero .value-prop {
+    font-size: 18px; font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
   }
+  .hero .sub {
+    font-size: 15px; color: var(--muted);
+    max-width: 480px; margin: 0 auto 4px;
+  }
+  .hero .free-tag {
+    display: inline-block;
+    margin-top: 12px;
+    background: #fefce8; color: #92400e;
+    font-size: 13px; font-weight: 600;
+    padding: 6px 18px; border-radius: 20px;
+    border: 1px solid #fde68a;
+  }
+
+  /* Social proof strip */
+  .proof-strip {
+    max-width: 680px; margin: 0 auto 16px;
+    padding: 0 20px;
+    display: flex; justify-content: center; gap: 20px;
+    flex-wrap: wrap;
+  }
+  .proof-item {
+    font-size: 13px; color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .proof-item strong { color: var(--accent2); }
+
+  /* Card */
   .card {
     background: var(--card);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    padding: 40px;
+    padding: 32px 28px;
+    margin-bottom: 20px;
   }
 
+  /* Progress */
   .progress-bar {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 32px;
+    display: flex; gap: 6px;
+    margin-bottom: 28px;
   }
   .progress-dot {
-    flex: 1;
-    height: 4px;
+    flex: 1; height: 4px;
     background: var(--border);
     border-radius: 4px;
     transition: background 0.3s;
@@ -123,513 +107,693 @@
   .progress-dot.active { background: var(--accent); }
   .progress-dot.done { background: var(--accent2); }
 
-  .question { display: none; }
-  .question.active { display: block; }
-
-  .question h2 {
-    font-size: 22px;
-    font-weight: 600;
+  .step-label {
+    font-size: 12px; font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 1px;
     margin-bottom: 8px;
   }
-  .question .sub {
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 24px;
-  }
 
-  .options { display: flex; flex-direction: column; gap: 10px; }
+  /* Question */
+  .question { display: none; }
+  .question.active { display: block; }
+  .question h2 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+  .question .hint { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+
+  .options { display: flex; flex-direction: column; gap: 8px; }
   .option {
-    padding: 16px 20px;
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 18px;
     border: 2px solid var(--border);
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s;
-    font-size: 15px;
-    line-height: 1.4;
   }
-  .option:hover {
-    border-color: var(--accent);
-    background: #fef2f0;
-  }
-  .option.selected {
-    border-color: var(--accent);
-    background: #fef2f0;
-  }
-  .option .desc {
-    font-size: 13px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-  .option .tag {
-    display: inline-block;
-    font-size: 11px;
-    padding: 2px 10px;
-    border-radius: 10px;
-    background: #f3e8ff;
-    color: #7c3aed;
-    margin-top: 6px;
-  }
+  .option:hover { border-color: var(--accent); background: #fef2f0; }
+  .option.selected { border-color: var(--accent); background: #fef2f0; }
+  .option .emoji { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .option .text { flex: 1; }
+  .option .text .main { font-size: 15px; font-weight: 500; }
+  .option .text .desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
-  .btn-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-  }
+  .btn-row { display: flex; gap: 10px; margin-top: 20px; }
   .btn {
-    padding: 12px 28px;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
+    padding: 12px 28px; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; flex: 1;
   }
   .btn-primary {
-    background: var(--accent);
-    color: white;
+    background: var(--accent); color: white;
+    font-size: 16px; padding: 14px 28px;
   }
   .btn-primary:hover { background: #a93226; }
-  .btn-primary:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
-  .btn-secondary {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid var(--border);
-  }
+  .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+  .btn-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); }
   .btn-secondary:hover { background: var(--border); }
-  .btn-hidden { display: none; }
 
   /* Result */
   .result-section { display: none; }
   .result-section.active { display: block; }
 
-  .result-badge {
+  .result-header { text-align: center; margin-bottom: 24px; }
+  .result-header .badge {
     display: inline-block;
-    background: #f3e8ff;
-    color: #7c3aed;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 4px 16px;
-    border-radius: 20px;
+    background: #f3e8ff; color: #7c3aed;
+    font-size: 12px; font-weight: 600;
+    padding: 4px 14px; border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .result-header h2 { font-size: 24px; }
+  .result-header .sub { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  .result-box {
+    background: #faf5ff; border: 2px solid #e9d5ff;
+    border-radius: 12px; padding: 20px;
     margin-bottom: 16px;
   }
-  .result-box {
-    background: #faf5ff;
-    border: 2px solid #e9d5ff;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 20px;
-  }
   .result-box .label {
-    font-size: 11px;
-    font-weight: 600;
-    color: #7c3aed;
-    text-transform: uppercase;
+    font-size: 11px; font-weight: 600; color: #7c3aed;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+  }
+  .result-box .content { font-size: 15px; line-height: 1.7; color: var(--text); }
+  .result-box.action {
+    background: #fef2f0; border-color: #fecaca;
+  }
+  .result-box.action .label { color: #c0392b; }
+
+  /* Follow section - upgraded */
+  .follow-section {
+    background: linear-gradient(135deg, #fefce8, #fef9c3);
+    border: 2px solid #fde68a;
+    border-radius: 12px; padding: 24px 20px;
+    margin-top: 20px;
+  }
+  .follow-section .gift-badge {
+    display: inline-block;
+    background: #92400e; color: white;
+    font-size: 11px; font-weight: 700;
+    padding: 3px 10px; border-radius: 4px;
+    margin-bottom: 12px;
     letter-spacing: 1px;
+  }
+  .follow-section h3 {
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 4px; color: #1a1a2e;
+  }
+  .follow-section .sub {
+    font-size: 13px; color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .follow-section .value-list {
+    background: white; border-radius: 10px;
+    padding: 14px 18px; margin-bottom: 16px;
+    font-size: 14px; line-height: 1.8;
+  }
+  .follow-section .value-list .item {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .follow-section .input-group {
+    display: flex; gap: 8px;
     margin-bottom: 8px;
   }
-  .result-box .content {
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--text);
+  .follow-section input {
+    flex: 1; padding: 12px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px; font-size: 15px;
+    outline: none; transition: border 0.2s;
   }
-  .result-box .action {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px dashed #d8b4fe;
+  .follow-section input:focus { border-color: var(--accent); }
+  .follow-section .btn-follow {
+    padding: 12px 24px; white-space: nowrap;
+    background: #92400e; color: white;
+    border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    transition: background 0.2s;
   }
-  .result-box .action .label { color: #c0392b; }
-  .result-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-    flex-wrap: wrap;
+  .follow-section .btn-follow:hover { background: #78350f; }
+  .follow-section .btn-follow:disabled { background: #ccc; cursor: not-allowed; }
+  .follow-section .safe-note {
+    font-size: 12px; color: var(--muted);
+    display: flex; align-items: center; gap: 4px;
+    margin-top: 6px;
   }
+  .follow-section .alt-link {
+    display: block; text-align: center;
+    margin-top: 12px; padding: 10px;
+    background: white; border-radius: 10px;
+    font-size: 13px; color: var(--accent2);
+    text-decoration: none; font-weight: 500;
+  }
+  .follow-section .wechat-link {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px;
+    background: #f3f4f6; border-radius: 10px;
+    font-size: 14px; color: var(--text);
+    margin-top: 10px;
+  }
+  .follow-section .wechat-link .icon { font-size: 20px; }
 
-  /* Footer */
+  .thank-you { display: none; text-align: center; padding: 20px; }
+  .thank-you.active { display: block; }
+  .thank-you .icon { font-size: 48px; margin-bottom: 12px; }
+  .thank-you h3 { font-size: 18px; margin-bottom: 8px; }
+
+  .reset-btn {
+    display: block; width: 100%;
+    padding: 12px; margin-top: 20px;
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 10px;
+    font-size: 14px; cursor: pointer;
+  }
+  .reset-btn:hover { background: var(--border); }
+
   .footer {
-    text-align: center;
-    padding: 40px;
-    color: var(--muted);
-    font-size: 13px;
+    text-align: center; padding: 24px;
+    color: var(--muted); font-size: 13px;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 480px) {
     .hero h1 { font-size: 28px; }
-    .steps { grid-template-columns: 1fr; }
-    .hero, .steps, .assessment { padding-left: 20px; padding-right: 20px; }
-    .card { padding: 24px; }
+    .hero .value-prop { font-size: 16px; }
+    .card { padding: 20px 16px; }
+    .follow-section .input-group { flex-direction: column; }
+    .trust-bar { gap: 12px; font-size: 11px; }
   }
 </style>
 </head>
 <body>
 
-<div class="nav">破困体系 · 诊断工具</div>
+<div class="container">
+
+<!-- Trust Bar -->
+<div class="trust-bar">
+  <span>🔒 信息加密 · 绝不外泄</span>
+  <span>⏱ 仅需5分钟</span>
+  <span>🎁 免费 · 无需注册</span>
+  <span>📖 基于64卦困局体系</span>
+</div>
 
 <!-- Hero -->
-<section class="hero">
-  <div class="hero-badge">免费 · 5分钟</div>
-  <h1>你卡在 <span>哪一爻</span>？</h1>
-  <p>不是所有的困境都需要"振作起来"。先搞清楚你卡在哪里——然后只做那一爻该做的事。</p>
-</section>
 
-<!-- Steps -->
-<section class="steps">
-  <div class="step">
-    <div class="step-num">1</div>
-    <h3>选你的状态</h3>
-    <p>没钱、没力、没人、没方向、还是动不了？先找到入口。</p>
-  </div>
-  <div class="step">
-    <div class="step-num">2</div>
-    <h3>定位你的困卦</h3>
-    <p>从你的具体描述中，精准匹配到64卦中的唯一一卦。</p>
-  </div>
-  <div class="step">
-    <div class="step-num">3</div>
-    <h3>拿到你的处方</h3>
-    <p>读到"这说的就是我"的诊断，然后拿到今天就能做的第一个动作。</p>
-  </div>
-</section>
+<style>
+  .testimonials {
+    max-width: 680px; margin: 0 auto 16px;
+    padding: 0 20px;
+  }
+  .testi-card {
+    background: var(--card);
+    border-radius: 12px; padding: 16px 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 10px;
+    font-size: 14px; line-height: 1.6;
+    position: relative;
+  }
+  .testi-card .quote {
+    color: var(--text);
+    font-style: normal;
+  }
+  .testi-card .quote::before { content: "\201c"; color: var(--accent); font-size: 20px; font-weight: 700; }
+  .testi-card .quote::after { content: "\201d"; color: var(--accent); font-size: 20px; font-weight: 700; }
+  .testi-card .author {
+    margin-top: 8px; font-size: 12px; color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .testi-card .author .tag {
+    display: inline-block;
+    background: #f3e8ff; color: #7c3aed;
+    font-size: 10px; padding: 2px 8px; border-radius: 8px;
+  }
+  .testi-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 480px) {
+    .testi-row { grid-template-columns: 1fr; }
+  }
+</style>
+<div class="testimonials">
+  <div style="font-size:12px;color:var(--muted);margin-bottom:12px;text-align:center;">── 他们的故事 ──</div>
 
-<!-- Assessment -->
-<section class="assessment" id="app">
-  <div class="card">
-    <div class="progress-bar" id="progressBar"></div>
+  <details class="story-card" style="margin-bottom:10px;">
+    <summary class="story-summary" style="cursor:pointer;padding:16px 20px;background:var(--card);border-radius:12px;box-shadow:var(--shadow);list-style:none;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:24px;">👩</span>
+      <div style="flex:1;">
+        <div style="font-weight:600;font-size:15px;">"我每天哄完孩子，一个人在客厅坐到凌晨"</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">点击展开她的故事 →</div>
+      </div>
+      <span style="font-size:12px;background:#f3e8ff;color:#7c3aed;padding:2px 10px;border-radius:8px;">过载崩塌</span>
+    </summary>
+    <div style="padding:0 20px 20px;background:var(--card);border-radius:0 0 12px 12px;margin-top:-2px;line-height:1.8;font-size:14px;color:var(--text);">
+      <p>小陈，32岁，孩子两岁半。白天上班，晚上带娃，周末还要应付双方父母。</p>
+      <p>她说她最怕的不是累——是累到睡不着。每天哄完孩子已经十一点，明明困得不行，但躺在沙发上刷手机，一刷就到凌晨两点。"不是不想睡，是不敢睡。闭上眼睛，明天就要来了。"</p>
+      <p>她填了破困定位，系统给她匹配到<strong>「过载崩塌 · 初爻」</strong>。</p>
+      <p>诊断画面让她愣住了：<em>"你连续几周每天睡眠不到五小时。早上的第一反应不是新的一天开始了——而是今天又要应付完。"</em></p>
+      <p>她说看到这句话的时候，眼泪就下来了。"第一次有人把我心里那点事写出来了。"</p>
+      <p>今日动作只有一句话：<strong>"今晚提前15分钟放下手机，放在另一个房间充电。"</strong></p>
+      <p>"我当时想，15分钟有什么用？但那天晚上我真的试了。手机放客厅，躺在床上的时候，我发现自己其实已经很久没有在安静里待过了。"</p>
+      <p><strong>那一晚她睡了6个小时。不是很多，但这是她三个月来睡得最长的一次。</strong></p>
+      <p style="font-size:13px;color:var(--muted);margin-top:8px;">—— 已获取完整6步方案，目前在第4步</p>
+    </div>
+  </details>
 
-    <!-- Question container -->
-    <div id="questionContainer"></div>
+  <details class="story-card" style="margin-bottom:10px;">
+    <summary class="story-summary" style="cursor:pointer;padding:16px 20px;background:var(--card);border-radius:12px;box-shadow:var(--shadow);list-style:none;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:24px;">👨‍💼</span>
+      <div style="flex:1;">
+        <div style="font-weight:600;font-size:15px;">"工资到账的那一刻，我还完信用卡，余额是0"</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">点击展开他的故事 →</div>
+      </div>
+      <span style="font-size:12px;background:#f3e8ff;color:#7c3aed;padding:2px 10px;border-radius:8px;">资源枯竭</span>
+    </summary>
+    <div style="padding:0 20px 20px;background:var(--card);border-radius:0 0 12px 12px;margin-top:-2px;line-height:1.8;font-size:14px;color:var(--text);">
+      <p>阿强，28岁，在广州做仓库管理。每月工资4800，房租1200，伙食1000，花呗800，剩下的不够买一张回家的高铁票。</p>
+      <p>他说他最怕的不是穷——是算账。"每次打开手机银行，看到余额那个数字，我就锁屏放回去了。假装没看过。"</p>
+      <p>填了破困定位，系统匹配到<strong>「资源枯竭 · 四爻」</strong>。</p>
+      <p>诊断画面：<em>"你打开手机银行看了一眼余额，然后把手机锁屏，放回兜里——你假装自己没看过。但你站起来接水的时候，顺手把外卖软件里所有三十块以上的套餐都划掉了。"</em></p>
+      <p>阿强看完沉默了一会儿。"这不就是我吗。"</p>
+      <p>今日动作：<strong>"算一笔账：你最大的一笔非必要支出是什么？看见了就算做完。"</strong></p>
+      <p>他算了。最大的一笔非必要支出是——每周三次的外卖咖啡，一个月花掉360块。</p>
+      <p>"我以前没算过，觉得一杯咖啡十几块钱能贵到哪去。但360块是我一个月的话费加水电了。"</p>
+      <p><strong>他没有戒咖啡，但他开始自己冲了。一个月省了200块。</strong></p>
+      <p style="font-size:13px;color:var(--muted);margin-top:8px;">—— 已获取完整6步方案，目前在第2步</p>
+    </div>
+  </details>
 
-    <!-- Result container -->
-    <div class="result-section" id="resultSection">
-      <div class="result-badge">🎯 定位完成</div>
-      <h2 style="margin-bottom:8px;font-size:24px;" id="resultTitle"></h2>
+  <details class="story-card" style="margin-bottom:10px;">
+    <summary class="story-summary" style="cursor:pointer;padding:16px 20px;background:var(--card);border-radius:12px;box-shadow:var(--shadow);list-style:none;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:24px;">👔</span>
+      <div style="flex:1;">
+        <div style="font-weight:600;font-size:15px;">"年入百万，但每天晚上在车里坐半小时才上楼"</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">点击展开他的故事 →</div>
+      </div>
+      <span style="font-size:12px;background:#f3e8ff;color:#7c3aed;padding:2px 10px;border-radius:8px;">丰盛虚无</span>
+    </summary>
+    <div style="padding:0 20px 20px;background:var(--card);border-radius:0 0 12px 12px;margin-top:-2px;line-height:1.8;font-size:14px;color:var(--text);">
+      <p>杨哥，38岁，互联网公司总监。年入百万，有房有车有家庭。在外人看来，他什么都有了。</p>
+      <p>但他每天下班到车库之后，要在车里坐半个小时才上楼。不是什么都没做——就是坐在那里，刷手机，发呆。等那个"上楼回到生活里"的动力攒够了，才开门。</p>
+      <p>"不是不爱我老婆孩子，是那个门推开的瞬间，我要切换成另一个人。好丈夫、好爸爸——演了一天了，还要再演一晚上。"</p>
+      <p>系统匹配到<strong>「丰盛虚无 · 初爻」</strong>。</p>
+      <p>诊断画面：<em>"别人说'你已经很成功了'。你点了点头——不是因为同意，是懒得解释。"</em></p>
+      <p>他看到这句话的时候，把手机放下了。过了一会儿才拿起来继续看。</p>
+      <p>今日动作：<strong>"今晚允许自己不做任何需要有意义的事——躺平一小时，不带愧疚。"</strong></p>
+      <p>他试了。那天晚上他没有加班，没有看行业资讯，没有规划周末行程。他躺在沙发上，看了一部不需要动脑子的电影。</p>
+      <p><strong>"我发现自己很久没有做过'没有目的'的事了。那一小时里，我什么都没有想——但我觉得我在活着。"</strong></p>
+      <p style="font-size:13px;color:var(--muted);margin-top:8px;">—— 已获取完整6步方案，目前在第3步</p>
+    </div>
+  </details>
+</div>
+
+<div class="hero">
+  <div class="badge">已有人在这里找到方向</div>
+  <h1>5分钟找到你的 <span>真实困境</span></h1>
+  <div class="value-prop">然后拿到今天就能做的第一个动作</div>
+  <p class="sub">不是泛泛的"振作起来"——是一句让你觉得"这说的就是我"的诊断，和一个你今晚就能做的事。</p>
+  <div class="free-tag">🎁 免费 · 完整报告含6条行路篇动作</div>
+</div>
+
+<!-- Assessment Card -->
+<div class="card" id="app">
+  <div class="progress-bar" id="progressBar"></div>
+
+  <div id="questionContainer"></div>
+
+  <!-- Result -->
+  <div class="result-section" id="resultSection">
+    <div class="result-header">
+      <div class="badge">🎯 定位完成 · 你的专属结果</div>
+      <h2 id="resultTitle"></h2>
       <p class="sub" id="resultSubtitle"></p>
-      
-      <div class="result-box">
-        <div class="label">诊断画面</div>
-        <div class="content" id="resultDiagnosis"></div>
-      </div>
+    </div>
 
-      <div class="result-box" style="background:#fef2f0;border-color:#fecaca;">
-        <div class="label" style="color:#c0392b;">→ 今日动作</div>
-        <div class="content action" id="resultAction"></div>
-      </div>
+    <div class="result-box">
+      <div class="label">📖 诊断结果</div>
+      <div class="content" id="resultDiagnosis"></div>
+    </div>
 
-      <div style="margin-top:20px;padding:16px;background:#f3f4f6;border-radius:12px;text-align:center;font-size:14px;color:var(--muted);">
-        想要完整的破困报告（含全部6条行路篇动作）？<br>
-        <a href="https://tally.so/r/ZjWEpo" target="_blank" style="color:var(--accent);font-weight:600;text-decoration:underline;">留下邮箱，我们单独发给你 ➜</a>
-      </div>
-
-      <div class="result-actions">
-        <button class="btn btn-primary" onclick="resetQuiz()">重新测一次</button>
-        <button class="btn btn-secondary" onclick="shareResult()">分享结果</button>
+    <div class="result-box action">
+      <div class="label">👉 今日动作</div>
+      <div class="content" id="resultAction"></div>
+      <div style="margin-top:12px;font-size:13px;color:var(--muted);padding-top:12px;border-top:1px dashed #fecaca;">
+        💡 明天回来测下一个动作 → 6条爻辞对应6个动作，一天做一个<br>基于64卦困局体系 · 每个诊断对应真实人生场景，不是随机生成
       </div>
     </div>
+
+    <!-- 邮箱/微信收集 -->
+    <div class="follow-section" id="followSection">
+      <div class="gift-badge">🎁 免费领取</div>
+      <h3>你的专属6步破困方案已生成</h3>
+      <p class="sub">输入微信号，免费获取完整版（比上面更贴合你的情况）</p>
+
+      <div class="value-list">
+        <div class="item">✅ 你当前困卦的 <strong>全部6条行路篇动作</strong></div>
+        <div class="item">✅ 后续根据你的反馈 <strong>做个性化调整</strong></div>
+      </div>
+
+      <div class="input-group">
+        <input type="text" id="wechatInput" placeholder="你的微信号" oninput="checkFollowInput()">
+        <button class="btn-follow" id="btnFollow" disabled onclick="submitFollow()">免费领取 →</button>
+      </div>
+
+      <div class="safe-note">🔒 信息仅用于发送破困方案 · 随时可取消</div>
+
+      <div style="margin-top:12px;padding:12px;background:white;border-radius:10px;">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px;">📧 或用邮箱接收</div>
+        <div class="input-group">
+          <input type="email" id="emailInput" placeholder="你的邮箱" oninput="checkEmailInput()">
+          <button class="btn-follow" id="btnEmail" disabled onclick="submitEmail()" style="background:#7c3aed;">发送 →</button>
+        </div>
+        <div class="safe-note">🔒 信息仅用于发送方案 · 随时可取消</div>
+      </div>
+
+      <div class="wechat-link">
+        <span class="icon">📱</span>
+        <span>微信视频号关注 <strong>「懒哲人」</strong>，每天一条破困内容 + 后续动作提醒</span>
+      </div>
+    </div>
+
+    <!-- Thank you -->
+    <div class="thank-you" id="thankYou">
+      <div class="icon">✅</div>
+      <h3>已收到！</h3>
+      <p style="color:var(--muted);font-size:14px;">我们会把完整破困方案发到你的微信<br><br>
+      <strong>以上动作为通用版</strong> · 后续会根据你的反馈做个性化调整</p>
+      <div style="margin-top:16px;padding:12px;background:#f3f4f6;border-radius:10px;font-size:14px;">
+        📱 微信视频号搜索 <strong>「懒哲人」</strong>，获取每日破困内容
+      </div>
+    </div>
+
+    <a href="javascript:void(0)" onclick="resetQuiz()" style="display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--muted);text-decoration:underline;">重新测一次</a>
   </div>
-</section>
+</div>
 
 <div class="footer">
-  破困体系 · 让更多的小人物破困<br>
-  内容持续更新中
+  破困体系 · 让更多的小人物破困
+</div>
+
 </div>
 
 <script>
 // ==================== DATA ====================
+const MODULES = [
+  { id: 'economy', emoji: '💰', name: '缺钱', desc: '收入撑不住、负债、不知道靠什么赚钱' },
+  { id: 'health', emoji: '😴', name: '缺力', desc: '长期疲劳、失眠、身体在报警、动不了' },
+  { id: 'relation', emoji: '🤝', name: '缺人', desc: '被消耗、孤独、讨好、害怕社交' },
+  { id: 'order', emoji: '😶', name: '没意思', desc: '不知道我是谁、没意义、漂泊、心里空' },
+  { id: 'action', emoji: '⚡', name: '缺行动力', desc: '拖延、惯性绕圈、害怕做错、无法完成' }
+];
 
-const MODULES = {
-  economy: {
-    name: '经济困局',
-    subtitle: '"我没钱 / 钱不够 / 不知道怎么赚钱"',
-    color: '#c0392b'
-  },
-  health: {
-    name: '健康困局',
-    subtitle: '"我的身体在拖累我 / 我没有力气"',
-    color: '#16a34a'
-  },
-  relation: {
-    name: '关系困局',
-    subtitle: '"我没人 / 有人在消耗我 / 害怕社交"',
-    color: '#2563eb'
-  },
-  order: {
-    name: '秩序困局',
-    subtitle: '"我不知道我是谁 / 不知道要什么"',
-    color: '#7c3aed'
-  },
-  action: {
-    name: '行动困局',
-    subtitle: '"我知道该做但动不了 / 拖延 / 三分钟热度"',
-    color: '#d97706'
-  }
-};
-
-// Each困卦: { id, name, core, module, 爻辞: [6条], 行路篇: [6条入口] }
-const DATA = {
+const GUA = {
   economy: [
-    { id: 'T1', name: '资源枯竭', core: '钱在缩，路在窄，你每天都在算还能撑多久。',
-      lines: [
-        '你上个月又用了一次那台开不了的旧电脑——你本来打算换的，但你算了算，换了之后这个月剩下的钱连吃饭都成问题。你没跟任何人说，只是把那笔换电脑的钱，悄悄转成了这个月的水电费和话费。',
-        '你把外卖软件里的套餐从三十块换成了十五块的，月底一看账单，还是超了。你删掉了打车软件，改成每天走十五分钟去坐地铁——就当是锻炼身体了。然后你坐在工位上，盯着那条房东的催租消息发呆了十分钟。',
-        '你妈上个月做手术，你从另一笔该留的钱里挪了五千块。现在那条银行流水记录就躺在你手机的聊天记录里，你每次翻到都不敢点开。你把几个同事的微信名截了图，准备挨个发消息问"有没有加班的活可以干"——你还没发。',
-        '你打开手机银行看了一眼余额，然后把手机锁屏，放回兜里——你假装自己没看过。但你从工位上站起来去接水的时候，顺手把外卖软件里所有三十块以上的套餐都划掉了，留下了十五块的那一档。',
-        '你删掉了手机里所有打车、外卖和视频会员的App。你坐在床边，看着手机桌面上空出来的那几个位置，按下了"添加"键，选择了一个记账软件。你输入了第一笔支出："泡面，3.5元。"',
-        '你把那台开不了的旧电脑给了回收的人，没要钱——就是不想再搬了。你看着它被拎走，像看着一件穿了太久、已经不需要穿的衣服。你回到屋里，那台便宜的二手主机还在桌上，你按了一下电源键，它亮了。'
-      ],
-      actions: [
-        '写下你能做的事——不用给别人看，只需要写出来。',
-        '说一个数字。任何一个数字。不用合理，只需要是一个数字。',
-        '找一个你信任的人，说"如果你身边有人需要这个，帮我留意一下"。',
-        '完成一次有偿服务后，向对方问一句"你觉得这个值多少"。',
-        '用一个你愿意接受的价格完成一次交易。',
-        '你已经知道你能卖什么了。不是因为你找到了最好的答案，是因为你试过了。'
-      ]},
-    { id: 'T21', name: '面子撑死', core: '你花了很多钱维护一个形象，但那形象不是你的。',
-      lines: [
-        '你在朋友聚餐时抢着买了单，回出租屋的路上算了一下——这顿饭钱够你活一周。你走得很慢，不是因为饱，是因为你正在后悔。',
-        '你买了一双鞋，穿了一次就后悔了。它挤脚，但你已经穿出去过了，你没法退。这双鞋花了你四天的工资。你把它放回鞋盒里的时候，看见鞋盒里还放着上个月买的那双。',
-        '你接到一个聚会的邀请，第一反应是"又要花钱了"。你犹豫了一会儿，还是答应了。你告诉自己"偶尔一次"，但你知道上个月你也是这么说的。',
-        '你删掉了几条朋友圈。那些照片里的消费纪录加起来，是你这个月房租的两倍。你坐在那里，不知道自己是在记录生活，还是在替自己编一个生活。',
-        '你开始拒绝一些饭局了。你说"最近忙"，其实你是真的没钱了。你发现说实话比编理由难，但你说了第一次，发现天没有塌。',
-        '你不再需要发朋友圈来证明自己过得好了。你发现那种"让别人觉得我过得不错"的冲动，已经比上个月淡了很多——不是因为你在压抑，是因为你真的不那么在意了。'
-      ],
-      actions: [
-        '停3秒。下次有人叫你买单的时候，给自己3秒。',
-        '说一个真实的数字——你目前能承受的消费上限。',
-        '今天拒绝一次不必要的社交支出，不解释原因。',
-        '把一件不需要的"面子物品"处理掉——卖掉、送掉、收起来。',
-        '连续三天，每天记一笔"为面子花的钱"。看完别删。',
-        '你已经不需要用消费来确认自己的位置了。'
-      ]},
-    { id: 'D18', name: '持续失血', core: '收入在进，但钱总是不知不觉漏光了。你不知道那些洞在哪里。',
-      lines: [
-        '你查了一下账单，发现有一笔自动续费你忘了三个月了。你取消订阅的时候，看着那笔总额站了一会儿——够你吃十顿饭了。',
-        '你把最近的支出拉了一张表，发现最大的一笔不是房租，是你根本没印象的零碎消费。你盯着那个数字，觉得自己的手好像不是自己的。',
-        '你开始记账了。你打开手机银行，把每一笔支出都记下来，发现有一笔钱你已经不记得花在哪了。这个月不知道花在哪里的钱，已经累积到了六百块。',
-        '你把"不知道花在哪里的钱"单独列了一行。那个数字开始变小了——不是因为收入变多了，是因为你开始看见它了。',
-        '你发现自己能在月底的时候，说清楚这个月的钱去哪了。你不需要跟任何人汇报，但你知道了。',
-        '你发现漏掉的东西变少了。你把它从"漏"变成了"记下了"，虽然离"记住"还差一段距离。'
-      ],
-      actions: [
-        '查一下你所有的自动续费订阅，列一张清单。',
-        '把最近一个月最大的一笔非必要支出标出来。',
-        '开一个记账条目——"不知道花在哪里的钱"，把今天的记进去。',
-        '把这个条目缩减到上个月的一半，不管用什么方法。',
-        '连续三天，每天对一笔"没必要的支出"说"今天不花"。',
-        '你已经不再需要用记账来管住自己了。你的手已经知道了。'
-      ]},
-    { id: 'H13', name: '过度顺从', core: '你说"好的"说得太顺了。顺到忘了自己还有价格。',
-      lines: [
-        '同事让你帮忙做一份PPT，你答应了。你加班做到十一点，对方说"谢谢"的时候，你发现这个"谢谢"就是你全部的报酬了。',
-        '朋友找你借钱，你借了。你想着"他应该会还的"，但你写借条的时候手在抖——你知道他不会主动还。',
-        '你帮了一个人的忙，对方请你吃饭。你坐在饭桌上，发现你提供的服务值这顿饭的十倍。你什么都没说，把饭吃了。',
-        '你教别人做你做的事，教完之后，对方说"以后有活找你"。你发现你把自己的活儿教给了抢你活儿的人。',
-        '你开始主动划边界了。你告诉别人"这些事我帮不了"、"这个时间我不行"。你说出口之后，发现对方没有追问。',
-        '你已经不需要练习说"不"了。你发现自己多出来的时间，用在了能换成收入的事情上。'
-      ],
-      actions: [
-        '写下最近一次你答应但不想做的事——只写，不分析。',
-        '今天对一个人说一个很小的"不"——"这个时间我不行"。',
-        '说"不"之后，不追加解释。让"不"自己站在那儿。',
-        '连续两天，每天说一次"不"——对两件不同的事。',
-        '当对方追问"为什么"的时候，你只说"就是不行的"。',
-        '"不"已经变成一个自然的词了。你说它不需要提前准备了。'
-      ]},
-    { id: 'H15', name: '涣散失焦', core: '你有很多想法，但没有一个变成钱。你在起点反复出发。',
-      lines: [
-        '你今天又开了十几个网页。你在它们之间来回切换，每一个都没有看完。你关掉浏览器的时候，发现自己已经想不起最初打开它是因为哪一个页面了。',
-        '你收藏了一堆"赚钱方法"，一个都没试过。你想着"等准备好了再开始"，但你也不知道准备到什么程度算够。',
-        '你开始做了一个小项目，做到一半觉得方向不对，又换了一个。你换了三次，一个都没做到能拿出来见人的程度。',
-        '你把之前做了一半的东西翻出来看了看，发现其实没有你记忆中那么差。你坐在那里想了十分钟，不知道该继续还是该放弃。',
-        '你选了一个方向，做完了第一版。它不完美，但你做完了一版，这比之前的你都强。',
-        '你发现"完成一版"比"想十个方向"更有用。你不再需要靠想法来证明自己能行了。'
-      ],
-      actions: [
-        '写三个你被人夸过的事——不筛选，不判断。',
-        '从三件事里选一件最不费劲的，给它起一个名字。',
-        '把这件事以最简单的形式做一次——不完美，不完整，只做一次。',
-        '把这次的结果展示给一个人看。不卖，只需要知道能不能被识别。',
-        '根据反馈改一个地方，然后做第二次。只改一个地方。',
-        '你已经知道你能做什么了。不是找到了最好的答案，是试过了。'
-      ]}
+    { id: 'T1', name: '资源枯竭', desc: '钱在缩，每天都在算还能撑多久。选项越来越窄。' },
+    { id: 'D18', name: '持续失血', desc: '钱不知道漏哪去了。没乱花，但月底一算又超了。' },
+    { id: 'H13', name: '不敢开价', desc: '一直说"好"，从不谈价格。你的付出值更多，但不敢开口。' },
+    { id: 'T3', name: '开局卡死', desc: '刚辞职/刚毕业/想转行，第一步迈不出去。' }
   ],
   health: [
-    { id: 'D5', name: '过载崩塌', core: '你已经超负荷运转太久了。身体在用症状问你——你准备听到了吗？',
-      lines: [
-        '你发现连续几周每天睡眠不到五小时，早上醒来的第一反应不是"新的一天开始了"，而是"今天又要应付完"。',
-        '你请了半天假，但一直在看手机。你坐在医院椅子上等叫号，回了七条工作消息，叫号的时候还在想要不要再检查一遍。',
-        '你直接不回复了。你看着那条消息，读完了，然后把手机翻过去，屏幕朝下。你坐在那里等了十五分钟，手机没有再亮。',
-        '你删掉了几个App。你看着手机桌面变空了，把剩下几个App的推送也关掉了。你把手机放在桌上，屏幕朝上——没有新的通知。',
-        '你在医院坐了一天。你没有打开工作群，没有回任何消息。回去的路上，你一直看着窗户外面的街道。',
-        '你下班了，走出大楼的时候没有看手机。你今晚设了一个闹钟，不是提醒你开会，是提醒你关灯。'
-      ],
-      actions: [
-        '今晚提前15分钟放下手机，放在另一个房间充电。',
-        '今晚把手机放在床以外的地方。不要求早睡，只要求多走两步才能拿到。',
-        '提前20分钟放下所有屏幕。不是早睡，是早点停止输入。',
-        '连续3天执行"睡前1小时无屏幕"。三天后你有新数据。',
-        '连续7天睡眠在7小时以上——白天没那么困了，可以停止检查了。',
-        '你不再计算睡眠时间了。你的身体学会了在需要的时候困。'
-      ]},
-    { id: 'H8', name: '停滞钝化', core: '你太久没动了。你忘了"动"是什么感觉。',
-      lines: [
-        '你今天几乎没有离开过这张椅子。等到窗外的天色变暗了，你才发现已经过去一整个白天了。你站起来的时候，腿有点麻。',
-        '你看到手机上的消息，没有回。你看到墙角的灰尘，想着"等会儿再擦"。窗外的风灌进来，你感觉到了，但没有站起来去关窗。',
-        '你已经很久没有主动联系过人了。你打开通讯录，翻了一下，想着"算了，也没什么好说的"，又关上了。',
-        '你被推了一次——有一件事不得不做。你做完之后，发现自己还能动。你发现自己只是在害怕"开始"本身。',
-        '你开始做一件很小的事了。你做完了，发现没有想象中那么难。你做完了，然后发现你已经不需要停下来庆祝了。',
-        '你发现了今天的自己能做的事比昨天多了一点。你呼吸的时候肩膀是垂下去的——你已经很久没有注意过肩膀了。'
-      ],
-      actions: [
-        '站起来一次，走3步，然后坐下。不是运动，是打断"坐着"一次。',
-        '设定一个计时器，每坐45分钟站起来一次。不要求走，只要求中断。',
-        '站起来之后，做三个伸展动作——伸手向上、左右转身、弯腰触地。',
-        '连续两天，每天完成一次"站起来+走30步"。',
-        '连续5天，每天至少有一次"站起来走动超过2分钟"的记录。',
-        '你不再计算"今天有没有站起来"了。身体会在坐久之后自动提醒你。'
-      ]},
-    { id: 'H14', name: '愉悦上瘾', core: '你不用食物/屏幕/物质麻痹自己就撑不下去。你停不下来。',
-      lines: [
-        '你又刷了一整晚的视频。你关掉的时候，发现已经凌晨两点了。你告诉自己"明天不这样了"，但你知道你明天还是会这样。',
-        '你又在用食物来让自己舒服了。你吃完之后，发现你其实不饿。你发现你吃东西的时候，脑子里在想别的事——你在回避什么。',
-        '你又在用买东西来让自己好受了。你拆快递的时候，发现自己已经不太记得买了什么了。你看着那些东西，想着"我只是想买点什么"。',
-        '你做了一件事，没有发到任何平台。你做完之后，发现自己没有在想要不要分享它。你发现"做完"和"被人看到"之间的距离，比你想象的要宽。',
-        '你放下手机，坐在床边。你发现你确实在用它们来避开某种疲惫。你发现你已经不想避开它了。你想去睡一下。',
-        '你发现自己已经不再需要那些短暂的逃避了。你能够安静地坐一会儿，不刷手机，不吃东西——只是坐着。'
-      ],
-      actions: [
-        '今晚某次拿起手机准备刷的时候，先停3秒——不放下，不开始，只是停。',
-        '在下次想吃/刷/买之前，先问自己一句"我现在在想什么"——不需要回答。',
-        '今天选一个你平时会用麻痹来回避的时刻，换一个动作——起身去倒水、走出房间一分钟。',
-        '做一件你可以发到社交媒体上的事，但没有发出去。做完之后安静待着。',
-        '手机放在客厅，你躺下了。你不需要用任何东西来填充这十几分钟。',
-        '你已经很久没有用进食/屏幕/物质来填充一个空白时刻了。你可以在空白里待着了。'
-      ]}
+    { id: 'D5', name: '过载崩塌', desc: '已经超负荷太久了。身体在用症状跟你说话。' },
+    { id: 'H8', name: '停滞钝化', desc: '太久没动了。不是不想动，是启动开关找不到了。' },
+    { id: 'H14', name: '愉悦上瘾', desc: '不用刷手机/吃/买就撑不下去。停不下来。' }
   ],
   relation: [
-    { id: 'D14', name: '亲情绑架', core: '你被家人用"应该"和"必须"捆住了。每一个"你是唯一的希望"都是一根更紧的绳。',
-      lines: [
-        '你接到家里的电话，在电话里说"好"。挂断之后，你发现自己又答应了一件事。你站在窗前，看到楼下有人在散步，步子很慢。',
-        '你在饭桌上又听到了那句"你是家里唯一的希望"。你低头夹菜，没有接话。你把碗放进水槽，打开了水龙头。',
-        '你拒绝了。你说"这次我真的帮不了"。电话那头安静了一会儿，然后说"那我自己想办法"。你挂了电话，发现自己没有内疚。',
-        '你开始设底线了。你告诉对方哪些事你能做，哪些事你不能再做了。你说完之后，发现自己没有解释为什么。',
-        '你发现对方在试着尊重你的界限了。你听到他们说"这件事我自己来就行"。你停了一下，说"好"。',
-        '你站在自己的边界内。你帮他们做了一件事，做完之后，发现自己没有在算"我该不该做"。你知道那是你想做的，不是因为你必须。'
-      ],
-      actions: [
-        '今天不接一个电话——只选一个，就只回避这一个。',
-        '当对方再次提出要求时，你只说"我再想想"。不答应，不拒绝。',
-        '说一次"不"——对对方提出的一个小要求，说"这个我做不了"。',
-        '设立一条明确的底线——告诉对方"这件事我不能做"。',
-        '当对方试图越过底线时，你再说一次"不行"——你的声音没有发抖。',
-        '你已经不需要再练习设底线了。你发现对方已经学会了尊重你的边界。'
-      ]},
-    { id: 'H12', name: '漂泊无根', core: '你在一个地方待了很久，但没有扎下根。你随时可以消失。',
-      lines: [
-        '你搬了三次家，每次都是一个人。你收拾行李的时候发现，你所有的东西两个箱子就装完了。你看着那两个箱子，不知道自己是在生活还是在寄存。',
-        '你走在街上，看到一家店的老板在跟熟客聊天。你走了过去，没有人叫住你。你继续走了，没有回头。',
-        '你填表的时候在"籍贯"那一栏停了一下。你不知道该写哪——那个地方你已经不回去了，这里也不是。你写了一个地名，感觉像在写别人的地址。',
-        '你在这个城市有了一些固定的去处——常去的便利店、固定的理发师、同一家早餐摊。你发现你开始被认出来了。',
-        '你帮楼下保安开了一次门，他跟你说了声"下班啦"。你点了点头，发现你在笑——你以为自己没在笑。',
-        '你不再需要问"我属于哪里"了。你发现归属不是被给予的——你在的地方，就是你的地方。'
-      ],
-      actions: [
-        '在今天的某个时候，停在一个地方，对自己说一句："我在这里。"',
-        '把房间里的三样东西，移到你觉得"它们该在"的位置。',
-        '在这个城市里找一个你可以免费停留的地方——坐10分钟。',
-        '在常去的店里点同一个东西，让它开始"认出你"。',
-        '连续一周，每天在同一时间回到同一个地方待15分钟。',
-        '你不再问"我属于哪里"了。你在的地方，就是你的地方。'
-      ]}
+    { id: 'D14', name: '亲情绑架', desc: '被家人用"应该"和"必须"捆住了。' },
+    { id: 'D16', name: '婚姻消耗', desc: '在一段关系里撑了很久。进退都痛。' },
+    { id: 'H12', name: '漂泊无根', desc: '在哪都像外人。没有地方叫"回去"。' }
   ],
   order: [
-    { id: 'H1', name: '身份迷失', core: '你不知道自己是谁。旧的标签已经脱落，新的还没有长出来。',
-      lines: [
-        '你填表的时候，在"职业"那一栏停了很久。你写了一个词，划掉了，又写了另一个词。最后你写了一个你很久没用过的头衔。',
-        '你删掉了自己的社交账号简介。光标一直在闪。你打了几个字，又删掉了。你发现自己已经不知道该用什么词来介绍自己了。',
-        '你听到有人说"你就是那个做XX的人"，你想说"我已经不是了"，但你只是点了点头。你发现自己已经不需要用别人的定义来填空了。',
-        '你开始做一件新的事。你写在纸上的时候，发现"职业"那一栏你已经可以不填了。你发现自己已经不再需要用头衔来确认位置了。',
-        '你在介绍自己的时候，没有说职位。你说"我最近在做XX"。你说这句话的时候，没有在等别人接"那你原来是做什么的"。',
-        '你不需要再定义自己了。你站在自己做过的事情里。你写了一个词，只写了一个词，然后直接翻到了下一页。'
-      ],
-      actions: [
-        '写下一个你曾经是但现在已经不是的身份。就写一个。',
-        '写下"我曾经是______"，填一个词。下面写"我现在是______"——第二个空着。',
-        '问一个人"你觉得我是怎样的人"——不解释为什么问。',
-        '把你喜欢做的三件事写下来——不是"擅长"，是"喜欢"。',
-        '用"我喜欢______，而不是______"写一句话。',
-        '你已经在做你喜欢的事了。你在做的时候不会问"这算不算我"。'
-      ]},
-    { id: 'H11', name: '丰盛虚无', core: '你什么都有了，但什么都不重要。你站在山顶上，发现山顶是平的。',
-      lines: [
-        '你拿到了那个你追了三年的结果。你看着那封通知，发现心里没有波澜。你把它放在桌上，继续做你刚才在做的事——吃完那碗面。',
-        '别人说"你已经很成功了"，你点了点头。你发现你点头不是因为同意，是因为你懒得解释。',
-        '你躺在沙发上刷手机，看到别人在晒收入、晒房、晒车。你都有。但你发现你并不羡慕他们——你是不知道自己还该想要什么了。',
-        '你试着找了一件新的事来做。做了一半，你发现你知道它的尽头是什么样的了。你没有继续。',
-        '你停下来，坐在那里，没有刷手机，没有想下一步。你发现自己已经很久没有这样停过了。你想着："我是不是真的可以什么都不做。"',
-        '你发现"重要"不再需要别人来定义了。你知道哪些事对你来说重要，哪怕全世界只有你一个人在乎。'
-      ],
-      actions: [
-        '今天只做一件事——做一件你自己想做的、不需要别人知道的事。',
-        '做这件事的时候不赶时间。做完之后，感受一下那几秒钟。',
-        '选一件你很久没做但以前喜欢的事——做5分钟。',
-        '创造一件只属于你自己的小事。它是你为自己设定的秩序。',
-        '连续三天，每天做一件"不需要被人知道"的事。',
-        '你发现"重要"不再需要别人来定义了。你的心里已经有了一把尺子。'
-      ]}
+    { id: 'H1', name: '身份迷失', desc: '旧的标签掉了，新的还没长出来。' },
+    { id: 'H11', name: '丰盛虚无', desc: '什么都有了，但什么都不重要。' }
   ],
   action: [
-    { id: 'D9', name: '惯性困守', core: '你知道现状不对，但你改不了。你已经在一套旧模式里走了太久。',
-      lines: [
-        '你走回同一个路口，又拐进了同一条街。你站在那家你常去的便利店门口，手里拿着的饮料跟你上周买的是同一款。你在想，是它好喝，还是你只是没试过别的。',
-        '你又在同一件事上绕了一天。你把之前的那份方案再修改了一遍，调整了几个数字的排列顺序。你把新版本存了，重命名成"待定_3"。',
-        '你发现你一直在同一件事情上试了第三遍了。你打开那份材料，光标停在同一个位置。它在你脑子里已经成型了，但你始终没有写一个新的版本。',
-        '你换了一个方法。你从零开始写。你发现自己写出来的东西和上次不一样——措辞不一样了，开头的角度也变了。',
-        '你走到了一条新的路上。你走完了，发现结果跟原来的路不太一样——不是更好，也不是更差，是不同。',
-        '你发现自己已经在新的节奏里了。你走到需要选择的时候，发现自己已经在走另一条路了。你的步子在每一个转弯处都没有犹豫。'
-      ],
-      actions: [
-        '在一件最小的日常事上换一个选项——走另一条路回家、买一个你没喝过的饮料。',
-        '在一件你一直在做的事上，尝试一种你不常用的做法。顺序调换、工具换掉。',
-        '选一件你已经做了很久的事，停下来一天，不碰它。不是解决，是观察。',
-        '重新做一次，但不参考之前做过的任何版本。你的手已经不在原来的惯性里了。',
-        '走完新方向的一个完整回合——从开始到结束，不中途退回到旧方法。',
-        '你已经在走了。你已经不需要再确认方向了。'
-      ]},
-    { id: 'D20', name: '决断瘫痪', core: '你一直在等"对的时机"。但你心里知道，那个时机不会来。',
-      lines: [
-        '你有两个选择，你列了一张对比表。你填了半张就停了，因为你知道填完之后你还是决定不了。',
-        '你问了三个人，得到了三个不同的答案。你发现你问的人越多，你越不知道怎么选。你坐在那里，等着第四个人出现。',
-        '你把那个决定推迟了一周。一周后你又推迟了一周。你发现自己不是在等更好的选项，你是在等"一个不会错的选项"——那不存在。',
-        '你闭着眼睛选了一个。选完之后你没有后悔——你发现你害怕的不是选错，是选了之后没有退路。你现在知道退路是自己给的。',
-        '你做了一个决定，然后执行了它。你没告诉任何人——因为不需要确认。你发现自己选完之后，原来不确定的东西，在往前走的过程中慢慢清晰了。',
-        '你不再需要"对的时机"了。你发现时机不是等来的，是你在走的过程中踏出来的。'
-      ],
-      actions: [
-        '把两个选项各写一行。然后划掉一个——用笔划掉。',
-        '找一个你信任的人，告诉他你的两个选项，然后抛硬币。',
-        '选一个，执行一天。明天你可以换。今天先做这一个。',
-        '连续两天，每天执行你选的那个方向的一个最小动作。',
-        '连续五天，每天走同一条路。五天之后你已经有数据了。',
-        '你发现时机不是等来的。是你走出来的。'
-      ]}
+    { id: 'D9', name: '惯性困守', desc: '知道不对但改不了。在同一条路上绕了太久。' },
+    { id: 'D20', name: '决断瘫痪', desc: '一直在等"对的时机"。但你知道它不会来。' }
   ]
 };
 
-// ==================== QUIZ LOGIC ====================
+const LINES = {
+  'T1': {
+    lines: [
+      '你把外卖从三十块换成了十五块的，月底一看，还是超了。删掉了打车软件，开始走十五分钟去坐地铁。',
+      '打开手机银行看了一眼余额，锁屏放回兜里。站起来接水的时候，顺手把外卖里所有三十块以上的划掉了。',
+      '删掉了所有打车、外卖和视频会员的App。装了一个记账软件，输入了第一笔支出："泡面，3.5元。"',
+      '把旧电脑给了回收的人，没要钱。不是大方，是不想再搬了。回到屋里，新主机亮了。',
+      '开始教别人做你做的事了。教的时间是你替他们做的一半，那一半时间可以换成你的收入。',
+      '把之前半途而废的东西翻出来看了看，其实没那么差。坐下改了一版，发给了第一个人。'
+    ],
+    actions: [
+      '写下一个数字：你最低需要多少钱活一个月。今天只写这个。',
+      '算一笔账：你最大的一笔非必要支出是什么？看见了就算做完。',
+      '取消一个自动续费。就一个。看看月底少了几块钱。',
+      '把一件闲置超过3个月的物品处理掉——卖掉、送掉、扔掉。',
+      '为你做的一件事定一个价格。不是市场价，是你愿意接受的最低价格。',
+      '为一个人做了一件你擅长的事，然后收钱。就从这一次开始。'
+    ]
+  },
+  'D18': {
+    lines: [
+      '查账单发现一笔自动续费忘了三个月。取消的时候看了总额——够吃十顿饭了。',
+      '把最近的支出拉了一张表，发现最大一笔不是房租，是零碎消费。手好像不是自己的。',
+      '开始记账了。发现有一笔不知道花哪了的钱，这个月累积到了六百。给它起了一行名字："黑洞"。',
+      '"黑洞"那个数字开始变小了。不是因为收入变多了，是因为开始看见它了。',
+      '能在月底说清楚钱去哪了。不需要跟任何人汇报，但自己知道了。',
+      '漏掉的东西变少了。从"漏"变成了"记下了"，离"记住了"还差一点——但在走了。'
+    ],
+    actions: [
+      '查一下有哪几个自动续费你还开着。列出来，看完就行。',
+      '从列表里关掉一个。选那个你三个月没碰过的。',
+      '开一个记账条目叫"不知道花哪了"，今天花了什么不确定的，记进去。',
+      '把昨晚的支出回忆一遍写下来——能想起多少算多少。',
+      '今天花任何超过50块之前，先暂停10秒。停完再决定。',
+      '你花的每一笔钱都想得起是花在哪了。不用记了，你知道了。'
+    ]
+  },
+  'H13': {
+    lines: [
+      '同事让帮忙做PPT，加班到十一点。对方说了谢谢——那就是全部报酬了。',
+      '朋友找你借钱，借了。写借条的时候手在抖——知道他不会主动还。',
+      '帮了一个人，对方请你吃饭。你的服务值这顿饭的十倍。没说话，把饭吃了。',
+      '教别人做你的事，对方说"以后有活找你"。把自己的活儿教给了抢活儿的人。',
+      '开始说"不行"了。说出口之后发现对方没有追问。原来可以拒绝。',
+      '"不"已经是一个自然的词了。说完不会再去想对方怎么想。'
+    ],
+    actions: [
+      '写下最近一次你答应但不想做的事。只写，不分析。',
+      '今天对一个人说一个很小的"不"——"这个时间我不行"。',
+      '说了"不"之后，不追加解释。让"不"自己站着。',
+      '连续两天，每天说一次"不"——对两件不同的事。',
+      '当对方追问时，只说"就是不行的"。不再给更多理由。',
+      '"不"和"好"一样自然。不再需要练习了。'
+    ]
+  },
+  'T3': {
+    lines: [
+      '刚辞职，还没想好下一步。打开招聘软件划了几下关掉了。告诉自己休息几天。',
+      '投了四份简历，没回复。又搜了一遍，结果跟上次一样。不知道该继续投还是停下来。',
+      '在招聘软件上划了半小时。看到一个岗位点进去——记不清第几次了。想投，看了要求又关了。',
+      '把三个招聘App都刷了一遍。投了七份，没回复。又拿起手机把刚投的看了一遍。',
+      '接到面试电话。挂了才发现手心出汗了——太久没听到"简历通过"了。对着镜子练了一下午。',
+      '收到offer时正在吃外卖。以为是垃圾邮件差点删了。看完把手机扣桌上。那口饭忽然有味道了。'
+    ],
+    actions: [
+      '写下你现在能做的三件事——不用"擅长"，是"能做"。写完放着。',
+      '从三件事里选一件你最不讨厌的，搜一下"做这个需要什么"。只搜，不投。',
+      '找到那个岗位的要求，对着写下你已有的匹配项。有就是有，没有就是没有。',
+      '投一份简历。今天只投这一份。投完关掉手机。',
+      '为面试准备一个问题。只准备一个——你最想知道的。问出来。',
+      '你已经迈出第一步了。不是因为准备好了——是发现不准备好也能走。'
+    ]
+  },
+  'D5': {
+    lines: [
+      '连续几周每天睡不到五小时。早上的第一反应不是"新的一天"，是"又要应付完"。',
+      '请假去了医院，但一直在看手机。叫号的时候回了七条消息。医生说话像隔了一层玻璃。',
+      '开始不回复了。看着消息读完，把手机翻过去。等了十五分钟，它没再亮。',
+      '删掉了几个App，关掉了推送。手机放在桌上屏幕朝上——没有新的通知。',
+      '在医院坐了一天。没开工作群，没回消息。回去的路上一直看着窗外。',
+      '下班没看手机。今晚设的闹钟不是提醒你开会——是提醒你关灯睡觉。'
+    ],
+    actions: [
+      '今晚提前15分钟放下手机。不要求睡，只要求提前进入黑暗。',
+      '今晚把手机放客厅。不要求早睡，只要求多走两步才能拿到。',
+      '提前20分钟放下所有屏幕。不是早点睡，是早点停止输入。',
+      '连续3天执行"睡前1小时无屏幕"。三天后看数据。',
+      '连续7天睡眠7小时以上。白天没那么困了，可以不用查了。',
+      '不再计算睡眠时间了。身体学会了在需要的时候困。'
+    ]
+  },
+  'H8': {
+    lines: [
+      '今天没离开过这张椅子。等天色暗了才发现过去了一整个白天。站起来腿麻了。',
+      '消息不回，灰尘不擦。风从窗缝灌进来，感觉到了，但没去关窗。',
+      '打开通讯录翻了一下又关上了。没什么好说的——但也知道，是不知道怎么开始说。',
+      '被一件事推了一下，不得不做。做完发现自己还能动。原来怕的不是做不好，是开始。',
+      '自己做了一件很小的事。做完了，没那么难。不需要庆祝，直接做了下一件。',
+      '今天能做的事比昨天多了一点。呼吸的时候肩膀是垂下去的。'
+    ],
+    actions: [
+      '站起来，走3步，坐下。不是运动，是打断"坐着"一次。',
+      '设一个计时器，每45分钟站起来一次。不要求走，只要求中断。',
+      '站起来后做三个伸展——向上、转身、弯腰。不要求标准，做了就行。',
+      '连续两天，每天完成一次"站起来+走30步"。',
+      '连续5天，每天至少有一次"走动超过2分钟"的记录。',
+      '不再计算今天有没有站起来了。身体会提醒你。'
+    ]
+  },
+  'H14': {
+    lines: [
+      '刷了一整晚视频。关掉时凌晨两点。告诉自己明天不这样了——但知道明天还会。',
+      '又在用食物让自己舒服。吃完发现根本不饿。吃东西的时候在想别的事。',
+      '又在买东西了。拆快递时不记得买了什么。看着那些东西，发现只是想买点什么。',
+      '做了一件事，没发到任何平台。发现做完和被人看到之间的距离，比想象中宽。',
+      '手机放客厅，躺下了。没睡着，但不需要用任何东西来填充这十几分钟了。',
+      '不再需要那些短暂的逃避了。能安静坐一会儿——不刷手机，不吃东西，只是坐着。'
+    ],
+    actions: [
+      '下次拿起手机准备刷的时候，先停3秒。不放下，不开始，只是停。',
+      '在下次想吃/刷/买之前，问自己一句"我现在在想什么"——不需要回答。',
+      '选一个你平时会用麻痹来回避的时刻，换一个动作——起身倒杯水，走出房间一分钟。',
+      '做一件可以发社交平台的事，但没发出去。做完之后安静待着。',
+      '手机放客厅，躺下了。不需要任何东西来填充这十几分钟。',
+      '可以在空白时刻里待着了。'
+    ]
+  },
+  'D14': {
+    lines: [
+      '电话里说了"好"。挂断后发现又答应了一件事。楼下有人散步，步子很慢。',
+      '饭桌上又听到那句"你是唯一的希望"。低头夹菜没接话。把碗放进水槽，水声盖过了那句话。',
+      '拒绝了。"这次我真的帮不了"。电话那头安静了。挂了之后没有内疚。',
+      '开始设底线了。告诉对方哪些能做、哪些不能。说完发现没有解释为什么。',
+      '对方开始尊重界限了。听到他们说"这件事我自己来就行"。停了一下，说"好"。',
+      '站在自己的边界内。帮他们做了一件事，做完没有在算"该不该做"。'
+    ],
+    actions: [
+      '今天不接一个电话。只选一个人，只回避这一次。',
+      '当对方提出要求时，只说"我再想想"。不答应，不拒绝。',
+      '说一次"这个我做不了"。不解释原因。',
+      '设一条底线——告诉对方"这件事我不能做"。说完停住。',
+      '当对方试图越线时，再说一次"不行"。声音没有发抖。',
+      '不再需要练习了。对方已经学会了尊重你的边界。'
+    ]
+  },
+  'D16': {
+    lines: [
+      '又在想"要不要离婚"了。每次吵架都想到这个词，但第二天又假装没事。已经反复了两年。',
+      '一个人的时候反而轻松。想到回家胸口就沉。不是不爱了，是爱被磨成了习惯性的疲惫。',
+      '试着沟通过。每次说不到三句就吵，或者变成沉默。已经不想再说了。',
+      '问自己"如果离开会失去什么"——列了一张单子，比想象中长。不是放不下他，是放不下那张单子。',
+      '做了一个决定——不是离不离婚的决定，是不再让这个问题每天折磨自己的决定。',
+      '发现已经不太在意那个答案了。不是不在乎——是终于相信无论选哪条路，都能走。'
+    ],
+    actions: [
+      '写下"如果不用考虑任何人，我想______"。填一个词，不判断，只写。',
+      '今天做一件和他无关的事。一个人去一个你们从没一起去过的地方。',
+      '找一个你信任的人，说出那句你从没对人说过的话。说出来就是完成。',
+      '写下你在这段关系里最不能失去的三样东西。看清楚底线在哪。',
+      '连续三天，每天为自己做一件事。"暂时不管他"——允许的。',
+      '无论选哪条路，你都能走。不需要答案了，已经有答案了。'
+    ]
+  },
+  'H12': {
+    lines: [
+      '搬了三次家，每次一个人。所有东西两个箱子装完。不知道是活着还是寄存着。',
+      '经过一家店，老板和熟客在聊天。走了过去没人叫住你。继续走了，没回头。',
+      '填表时"籍贯"那栏停了。不知道该写哪——那个地方不回去了，这里也不是。',
+      '在这个城市有了固定去处。常去的便利店，固定的理发师。开始被认出来了。',
+      '保安说了声"下班啦"。点了点头，发现自己笑了——以为没在笑。',
+      '不再问"我属于哪里"了。归属不是被给予的——你在的地方，就是你的地方。'
+    ],
+    actions: [
+      '今天停在一个地方，对自己说一句："我在这里。"不需要相信，只需要说。',
+      '把房间里三样东西，移到你觉得"它们该在"的位置。',
+      '在这个城市找一个可以免费停留的地方——坐10分钟。',
+      '在常去的店点同一个东西。让它开始"认出你"。',
+      '连续一周，每天同一时间回到同一个地方待15分钟。',
+      '不再问"我属于哪里"了。你在的地方，就是你的地方。'
+    ]
+  },
+  'H1': {
+    lines: [
+      '填表时"职业"那栏停了很久。写了一个词划掉，又写了一个。最后写了一个很久没用过的头衔。',
+      '删掉了社交账号简介。光标一直闪。打了几个字又删了——不知道用什么词介绍自己。',
+      '有人说"你就是那个做XX的人"。想说"我已经不是了"，但只是点了点头。',
+      '开始做一件新的事。写下来的时候发现"职业"那栏可以不填了。',
+      '介绍自己时没说职位。"我最近在做XX"。说这句话时，没在等人接话。',
+      '不需要再定义自己了。站在自己做过的事情里。填表时写了一个词，直接翻到下一页。'
+    ],
+    actions: [
+      '写下一个你曾经是但现在不是的身份。就写一个。',
+      '写下"我曾经是______"，填一个词。下面写"我现在是______"——第二个空着。',
+      '问一个人"你觉得我是怎样的人"。不解释为什么问。',
+      '写下三件你喜欢做的事——不是"擅长"，是"喜欢"。',
+      '用"我喜欢______，而不是______"写一句话。',
+      '已经在做喜欢的事了。做的时候不会问"这算不算我"。'
+    ]
+  },
+  'H11': {
+    lines: [
+      '拿到了追了三年的结果。看着通知心里没有波澜。放桌上，继续吃完那碗面。',
+      '别人说"你已经很成功了"。点了点头——不是因为同意，是懒得解释。',
+      '刷到别人晒收入晒房晒车。你都有，但你不羡慕——是不知道自己还该想要什么了。',
+      '试着找了一件新的事做。做了一半知道尽头什么样了。没继续。',
+      '停下来，没刷手机，没想下一步。已经很久没这样停过了。',
+      '发现"重要"不再需要别人定义了。知道哪些事对自己重要，哪怕全世界只有你在乎。'
+    ],
+    actions: [
+      '今晚允许自己不做任何需要"有意义"的事——躺平一小时，不带愧疚。',
+      '做完之后停下来，感受一下做完的那几秒。不需要有意义。',
+      '选一件很久没做但以前喜欢的事——做5分钟。不是重新爱上，是让身体回忆一下。',
+      '创造一件只属于你自己的小事。它是你为自己设定的秩序。',
+      '连续三天，每天做一件"不需要被人知道"的事。',
+      '"重要"不再需要别人定义了。心里已经有了一把尺子。'
+    ]
+  },
+  'D9': {
+    lines: [
+      '走回同一个路口，拐进同一条街。拿的饮料和上周是同一款。是它好喝，还是没试过别的？',
+      '在同一件事上绕了一天。把方案改了一遍，调了几个数字。存成"待定_3"——不是3就是∞。',
+      '发现自己在同一件事上试第三遍了。光标停在同一个位置。脑子里成型了，但没写新版。',
+      '换了方法从零开始写。写出来的东西不一样——角度变了，不是从老文件拆的。',
+      '走到了一条新路上。结果不太一样——不是更好不是更差，是不同。回头看了一下继续走了。',
+      '已经在新的节奏里了。走到选择时已经在走另一条路了。每个转弯都没有犹豫。'
+    ],
+    actions: [
+      '在一件最小的日常事上换一个选项——走另一条路回家，买一个没喝过的饮料。',
+      '在一件一直在做的事上，用一种不常用的做法——顺序调换，工具换掉。',
+      '选一件做了很久的事，停下来一天不碰它。不是解决，是观察轨迹。',
+      '重新做一次，但不参考之前任何版本。不翻旧文件，不回看记录。',
+      '走完新方向的一个完整回合——从开始到结束，不退回旧方法。',
+      '已经在走了。不需要再确认方向了。'
+    ]
+  },
+  'D20': {
+    lines: [
+      '有两个选择，列了一张对比表。填了半张就停了——知道填完还是决定不了。',
+      '问了三个人，三个答案。问越多越不知道怎么选。在等第四个人出现。',
+      '把决定推迟了一周。一周后又推了一周。不是等更好的选项——是在等一个不会错的选项。不存在。',
+      '闭眼选了一个。没后悔。怕的不是选错，是选了没退路。现在知道退路是自己给的。',
+      '做了一个决定，执行了。没告诉任何人——因为不需要确认。不确定的东西，走着走着就清晰了。',
+      '不再需要"对的时机"了。时机不是等来的，是走出来的。'
+    ],
+    actions: [
+      '把两个选项各写一行。然后划掉一个。用笔划。',
+      '告诉一个人你的两个选项。他说话之前，你心里已经知道倾向哪个了。',
+      '选一个，执行一天。明天可以换。但今天先做这一个。',
+      '连续两天，每天执行所选方向的一个最小动作。',
+      '连续五天，每天走同一条路。五天之后你已经有数据了。',
+      '时机不是等来的。是你走出来的。'
+    ]
+  }
+};
+
+const STEP_LABELS = ['选状态', '定位困卦', '选爻辞'];
 
 let state = { step: 0, answers: [] };
-const totalSteps = 4;
-
-function getModuleKeys() { return Object.keys(MODULES); }
 
 function initQuiz() {
   state = { step: 0, answers: [] };
   document.getElementById('questionContainer').style.display = 'block';
   document.getElementById('resultSection').classList.remove('active');
+  document.getElementById('thankYou').classList.remove('active');
+  document.getElementById('followSection').style.display = 'block';
   renderProgress();
   renderStep();
 }
@@ -637,7 +801,7 @@ function initQuiz() {
 function renderProgress() {
   const bar = document.getElementById('progressBar');
   bar.innerHTML = '';
-  for (let i = 0; i < totalSteps; i++) {
+  for (let i = 0; i < 3; i++) {
     const dot = document.createElement('div');
     dot.className = 'progress-dot';
     if (i < state.step) dot.classList.add('done');
@@ -656,119 +820,101 @@ function renderStep() {
   if (state.step === 0) renderStep0(q);
   else if (state.step === 1) renderStep1(q);
   else if (state.step === 2) renderStep2(q);
-  else if (state.step === 3) renderStep3(q);
 
   container.appendChild(q);
 }
 
-// Step 0: Module selection
 function renderStep0(q) {
+  let opts = '';
+  MODULES.forEach((m, i) => {
+    opts += `
+      <div class="option" data-value="${m.id}" onclick="selectOpt(this,'${m.id}')">
+        <span class="emoji">${m.emoji}</span>
+        <div class="text">
+          <div class="main">${m.name}</div>
+          <div class="desc">${m.desc}</div>
+        </div>
+      </div>`;
+  });
   q.innerHTML = `
-    <h2>你现在最困扰的是什么？</h2>
-    <p class="sub">选一个最接近你的状态。这不是最终答案，是入口。</p>
-    <div class="options">
-      <div class="option" data-value="economy" onclick="selectOption(this,'economy')">
-        我没钱 / 钱不够<span class="desc">收入在缩、负债、不知道靠什么赚钱</span>
-      </div>
-      <div class="option" data-value="health" onclick="selectOption(this,'health')">
-        我的身体在拖累我<span class="desc">长期疲劳、失眠、动不了、身体在报警</span>
-      </div>
-      <div class="option" data-value="relation" onclick="selectOption(this,'relation')">
-        我身边的人在消耗我<span class="desc">被绑架、孤独、害怕社交、讨好</span>
-      </div>
-      <div class="option" data-value="order" onclick="selectOption(this,'order')">
-        我不知道自己想要什么<span class="desc">身份迷失、意义空虚、漂泊、全面困顿</span>
-      </div>
-      <div class="option" data-value="action" onclick="selectOption(this,'action')">
-        我知道该做什么但动不了<span class="desc">拖延、惯性绕圈、害怕做错、无法完成</span>
-      </div>
-    </div>
+    <div class="step-label">STEP 1 / 3</div>
+    <h2>你现在最缺什么？</h2>
+    <p class="hint">选一个最接近你的感受。没有对错。</p>
+    <div class="options">${opts}</div>
     <div class="btn-row">
-      <button class="btn btn-primary" id="btnNext0" disabled onclick="nextStep()">下一步</button>
-    </div>
-  `;
+      <button class="btn btn-primary" id="btnNext0" disabled onclick="nextStep()">开始诊断 →</button>
+    </div>`;
 }
 
-// Step 1: 困卦 selection based on module
 function renderStep1(q) {
-  const moduleKey = state.answers[0];
-  const moduleData = DATA[moduleKey];
-  const moduleInfo = MODULES[moduleKey];
+  const moduleId = state.answers[0];
+  const guaList = GUA[moduleId];
+  const mod = MODULES.find(m => m.id === moduleId);
 
-  let optionsHTML = '';
-  moduleData.forEach((gua, idx) => {
-    optionsHTML += `
-      <div class="option" data-value="${idx}" onclick="selectOption(this,${idx})">
-        ${gua.name}<span class="desc">${gua.core}</span>
-      </div>
-    `;
+  let opts = '';
+  guaList.forEach((g, i) => {
+    opts += `
+      <div class="option" data-value="${i}" onclick="selectOpt(this,${i})">
+        <span class="emoji">🔍</span>
+        <div class="text">
+          <div class="main">${g.name}</div>
+          <div class="desc">${g.desc}</div>
+        </div>
+      </div>`;
   });
 
   q.innerHTML = `
-    <h2>在「${moduleInfo.name}」里，你最像哪种？</h2>
-    <p class="sub">不是判断对错，选那个让你心里"嗯"了一下的。</p>
-    <div class="options">${optionsHTML}</div>
+    <div class="step-label">STEP 2 / 3 · ${mod.emoji} ${mod.name}</div>
+    <h2>哪种情况更像你？</h2>
+    <p class="hint">不用纠结——选那个让你心里"嗯"了一下的。</p>
+    <div class="options">${opts}</div>
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="prevStep()">上一步</button>
-      <button class="btn btn-primary" id="btnNext1" disabled onclick="nextStep()">下一步</button>
-    </div>
-  `;
+      <button class="btn btn-primary" id="btnNext1" disabled onclick="nextStep()">继续 →</button>
+    </div>`;
 }
 
-// Step 2: 爻辞 selection
 function renderStep2(q) {
-  const moduleKey = state.answers[0];
+  const moduleId = state.answers[0];
   const guaIdx = state.answers[1];
-  const gua = DATA[moduleKey][guaIdx];
+  const gua = GUA[moduleId][guaIdx];
+  const data = LINES[gua.id];
+  const pos = ['初爻','二爻','三爻','四爻','五爻','上爻'];
 
-  let optionsHTML = '';
-  gua.lines.forEach((line, idx) => {
-    const preview = line.length > 60 ? line.slice(0, 60) + '……' : line;
-    optionsHTML += `
-      <div class="option" data-value="${idx}" onclick="selectOption(this,${idx})">
-        ${preview}
-        <span class="tag">爻${['初','二','三','四','五','上'][idx]}</span>
-      </div>
-    `;
+  let opts = '';
+  data.lines.forEach((line, i) => {
+    opts += `
+      <div class="option" data-value="${i}" onclick="selectOpt(this,${i})">
+        <span class="emoji">📌</span>
+        <div class="text">
+          <div class="main">${line}</div>
+          <div class="desc" style="margin-top:4px;color:#7c3aed;font-size:12px;">${pos[i]}</div>
+        </div>
+      </div>`;
   });
 
   q.innerHTML = `
-    <h2>哪句话最像你现在的状态？</h2>
-    <p class="sub">不用选最精准的，选那个让你点了头的。</p>
-    <div class="options">${optionsHTML}</div>
+    <div class="step-label">STEP 3 / 3 · ${gua.name}</div>
+    <h2>哪句话最像你？</h2>
+    <p class="hint">如果好几条都像——选最近一次发生的那个。</p>
+    <div class="options">${opts}</div>
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="prevStep()">上一步</button>
-      <button class="btn btn-primary" id="btnNext2" disabled onclick="nextStep()">看结果</button>
-    </div>
-  `;
+      <button class="btn btn-primary" id="btnNext2" disabled onclick="showResult()">查看我的结果 →</button>
+    </div>`;
 }
 
-// Step 3: Result (simulated - collected by nextStep)
-function renderStep3(q) {
-  showResult();
-}
-
-// Navigation
-function selectOption(el, value) {
-  const parent = el.closest('.options') || el.parentElement;
+function selectOpt(el, value) {
+  const parent = el.closest('.options');
   parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   state.answers[state.step] = value;
-
-  // Enable next button
   const btnId = ['btnNext0', 'btnNext1', 'btnNext2'][state.step];
-  if (btnId) {
-    const btn = document.getElementById(btnId);
-    if (btn) btn.disabled = false;
-  }
+  const btn = document.getElementById(btnId);
+  if (btn) btn.disabled = false;
 }
 
 function nextStep() {
-  if (state.step === 2) {
-    // Show result
-    showResult();
-    return;
-  }
   state.step++;
   renderStep();
 }
@@ -778,42 +924,74 @@ function prevStep() {
   state.step--;
   state.answers.pop();
   renderStep();
+  const btnId = ['btnNext0', 'btnNext1'][state.step];
+  const btn = document.getElementById(btnId);
+  if (btn) btn.disabled = false;
 }
 
-// Result
 function showResult() {
   document.getElementById('questionContainer').style.display = 'none';
-  const section = document.getElementById('resultSection');
-  section.classList.add('active');
+  document.getElementById('resultSection').classList.add('active');
 
-  const moduleKey = state.answers[0];
+  const moduleId = state.answers[0];
   const guaIdx = state.answers[1];
   const lineIdx = state.answers[2];
-  const gua = DATA[moduleKey][guaIdx];
-  const moduleInfo = MODULES[moduleKey];
-  const posNames = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
+  const gua = GUA[moduleId][guaIdx];
+  const data = LINES[gua.id];
+  const mod = MODULES.find(m => m.id === moduleId);
+  const pos = ['初爻','二爻','三爻','四爻','五爻','上爻'];
 
-  document.getElementById('resultTitle').textContent = `${gua.name} · ${posNames[lineIdx]}`;
-  document.getElementById('resultSubtitle').textContent = `你卡在「${moduleInfo.name}」的 ${gua.name}·${posNames[lineIdx]}`;
-  document.getElementById('resultDiagnosis').textContent = gua.lines[lineIdx];
-  document.getElementById('resultAction').textContent = '→ ' + gua.actions[lineIdx];
+  document.getElementById('resultTitle').textContent = `${gua.name} · ${pos[lineIdx]}`;
+  document.getElementById('resultSubtitle').textContent = `你卡在「${mod.name}」区域`;
+  document.getElementById('resultDiagnosis').textContent = data.lines[lineIdx];
+  document.getElementById('resultAction').textContent = '👉 ' + data.actions[lineIdx];
+}
+
+function checkFollowInput() {
+  const val = document.getElementById('wechatInput').value.trim();
+  document.getElementById('btnFollow').disabled = val.length < 2;
+}
+
+function submitFollow() {
+  const wx = document.getElementById('wechatInput').value.trim();
+  if (wx.length < 2) return;
+
+  const moduleId = state.answers[0];
+  const guaIdx = state.answers[1];
+  const lineIdx = state.answers[2];
+  const gua = GUA[moduleId][guaIdx];
+  const pos = ['初爻','二爻','三爻','四爻','五爻','上爻'];
+
+  const tallyUrl = `https://tally.so/r/ZjWEpo?wechat=${encodeURIComponent(wx)}&result=${encodeURIComponent(gua.name + '·' + pos[lineIdx])}`;
+  window.open(tallyUrl, '_blank');
+
+  document.getElementById('followSection').style.display = 'none';
+  document.getElementById('thankYou').classList.add('active');
 }
 
 function resetQuiz() {
+  document.getElementById('followSection').style.display = 'block';
+  document.getElementById('thankYou').classList.remove('active');
   initQuiz();
 }
 
-function shareResult() {
-  const text = `我测了破困定位，卡在「${document.getElementById('resultTitle').textContent}」。`;
-  if (navigator.share) {
-    navigator.share({ title: '破困定位', text: text, url: window.location.href });
-  } else {
-    navigator.clipboard.writeText(text + ' ' + window.location.href);
-    alert('已复制结果，可以分享给朋友了');
-  }
+function checkEmailInput() {
+  const val = document.getElementById('emailInput').value.trim();
+  document.getElementById('btnEmail').disabled = val.length < 5 || !val.includes('@');
 }
-
-// Init
+function submitEmail() {
+  const email = document.getElementById('emailInput').value.trim();
+  if (email.length < 5 || !email.includes('@')) return;
+  const moduleId = state.answers[0];
+  const guaIdx = state.answers[1];
+  const lineIdx = state.answers[2];
+  const gua = GUA[moduleId][guaIdx];
+  const pos = ['初爻','二爻','三爻','四爻','五爻','上爻'];
+  const tallyUrl = `https://tally.so/r/ZjWEpo?email=${encodeURIComponent(email)}&result=${encodeURIComponent(gua.name + '·' + pos[lineIdx])}`;
+  window.open(tallyUrl, '_blank');
+  document.getElementById('followSection').style.display = 'none';
+  document.getElementById('thankYou').classList.add('active');
+}
 initQuiz();
 </script>
 </body>
