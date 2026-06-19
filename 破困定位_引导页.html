@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>破困定位 · 你卡在哪一爻？</title>
+<style>
+  :root {
+    --bg: #f7f5f2;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --accent: #c0392b;
+    --accent2: #8e44ad;
+    --border: #e5e7eb;
+    --shadow: 0 4px 24px rgba(0,0,0,0.06);
+    --radius: 16px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Nav */
+  .nav {
+    padding: 20px 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  /* Hero */
+  .hero {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 40px 40px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: #fce8e6;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
+
+  /* How it works */
+  .steps {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 40px 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .step {
+    background: var(--card);
+    padding: 24px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .step-num {
+    width: 28px; height: 28px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .step h3 { font-size: 15px; margin-bottom: 6px; }
+  .step p { font-size: 13px; color: var(--muted); }
+
+  /* Assessment Section */
+  .assessment {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 40px;
+  }
+
+  .progress-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .progress-dot {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+  .progress-dot.active { background: var(--accent); }
+  .progress-dot.done { background: var(--accent2); }
+
+  .question { display: none; }
+  .question.active { display: block; }
+
+  .question h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .question .sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    padding: 16px 20px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .option:hover {
+    border-color: var(--accent);
+    background: #fef2f0;
+  }
+  .option.selected {
+    border-color: var(--accent);
+    background: #fef2f0;
+  }
+  .option .desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .option .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    background: #f3e8ff;
+    color: #7c3aed;
+    margin-top: 6px;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+  }
+  .btn-primary:hover { background: #a93226; }
+  .btn-primary:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { background: var(--border); }
+  .btn-hidden { display: none; }
+
+  /* Result */
+  .result-section { display: none; }
+  .result-section.active { display: block; }
+
+  .result-badge {
+    display: inline-block;
+    background: #f3e8ff;
+    color: #7c3aed;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .result-box {
+    background: #faf5ff;
+    border: 2px solid #e9d5ff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .result-box .label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #7c3aed;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .result-box .content {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .result-box .action {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #d8b4fe;
+  }
+  .result-box .action .label { color: #c0392b; }
+  .result-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 28px; }
+    .steps { grid-template-columns: 1fr; }
+    .hero, .steps, .assessment { padding-left: 20px; padding-right: 20px; }
+    .card { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav">破困体系 · 诊断工具</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">免费 · 5分钟</div>
+  <h1>你卡在 <span>哪一爻</span>？</h1>
+  <p>不是所有的困境都需要"振作起来"。先搞清楚你卡在哪里——然后只做那一爻该做的事。</p>
+</section>
+
+<!-- Steps -->
+<section class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <h3>选你的状态</h3>
+    <p>没钱、没力、没人、没方向、还是动不了？先找到入口。</p>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <h3>定位你的困卦</h3>
+    <p>从你的具体描述中，精准匹配到64卦中的唯一一卦。</p>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <h3>拿到你的处方</h3>
+    <p>读到"这说的就是我"的诊断，然后拿到今天就能做的第一个动作。</p>
+  </div>
+</section>
+
+<!-- Assessment -->
+<section class="assessment" id="app">
+  <div class="card">
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Question container -->
+    <div id="questionContainer"></div>
+
+    <!-- Result container -->
+    <div class="result-section" id="resultSection">
+      <div class="result-badge">🎯 定位完成</div>
+      <h2 style="margin-bottom:8px;font-size:24px;" id="resultTitle"></h2>
+      <p class="sub" id="resultSubtitle"></p>
+      
+      <div class="result-box">
+        <div class="label">诊断画面</div>
+        <div class="content" id="resultDiagnosis"></div>
+      </div>
+
+      <div class="result-box" style="background:#fef2f0;border-color:#fecaca;">
+        <div class="label" style="color:#c0392b;">→ 今日动作</div>
+        <div class="content action" id="resultAction"></div>
+      </div>
+
+      <div style="margin-top:20px;padding:16px;background:#f3f4f6;border-radius:12px;text-align:center;font-size:14px;color:var(--muted);">
+        想要完整的破困报告（含全部6条行路篇动作）？<br>
+        <a href="https://tally.so/r/ZjWEpo" target="_blank" style="color:var(--accent);font-weight:600;text-decoration:underline;">留下邮箱，我们单独发给你 ➜</a>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn btn-primary" onclick="resetQuiz()">重新测一次</button>
+        <button class="btn btn-secondary" onclick="shareResult()">分享结果</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  破困体系 · 让更多的小人物破困<br>
+  内容持续更新中
+</div>
+
+<script>
+// ==================== DATA ====================
+
+const MODULES = {
+  economy: {
+    name: '经济困局',
+    subtitle: '"我没钱 / 钱不够 / 不知道怎么赚钱"',
+    color: '#c0392b'
+  },
+  health: {
+    name: '健康困局',
+    subtitle: '"我的身体在拖累我 / 我没有力气"',
+    color: '#16a34a'
+  },
+  relation: {
+    name: '关系困局',
+    subtitle: '"我没人 / 有人在消耗我 / 害怕社交"',
+    color: '#2563eb'
+  },
+  order: {
+    name: '秩序困局',
+    subtitle: '"我不知道我是谁 / 不知道要什么"',
+    color: '#7c3aed'
+  },
+  action: {
+    name: '行动困局',
+    subtitle: '"我知道该做但动不了 / 拖延 / 三分钟热度"',
+    color: '#d97706'
+  }
+};
+
+// Each困卦: { id, name, core, module, 爻辞: [6条], 行路篇: [6条入口] }
+const DATA = {
+  economy: [
+    { id: 'T1', name: '资源枯竭', core: '钱在缩，路在窄，你每天都在算还能撑多久。',
+      lines: [
+        '你上个月又用了一次那台开不了的旧电脑——你本来打算换的，但你算了算，换了之后这个月剩下的钱连吃饭都成问题。你没跟任何人说，只是把那笔换电脑的钱，悄悄转成了这个月的水电费和话费。',
+        '你把外卖软件里的套餐从三十块换成了十五块的，月底一看账单，还是超了。你删掉了打车软件，改成每天走十五分钟去坐地铁——就当是锻炼身体了。然后你坐在工位上，盯着那条房东的催租消息发呆了十分钟。',
+        '你妈上个月做手术，你从另一笔该留的钱里挪了五千块。现在那条银行流水记录就躺在你手机的聊天记录里，你每次翻到都不敢点开。你把几个同事的微信名截了图，准备挨个发消息问"有没有加班的活可以干"——你还没发。',
+        '你打开手机银行看了一眼余额，然后把手机锁屏，放回兜里——你假装自己没看过。但你从工位上站起来去接水的时候，顺手把外卖软件里所有三十块以上的套餐都划掉了，留下了十五块的那一档。',
+        '你删掉了手机里所有打车、外卖和视频会员的App。你坐在床边，看着手机桌面上空出来的那几个位置，按下了"添加"键，选择了一个记账软件。你输入了第一笔支出："泡面，3.5元。"',
+        '你把那台开不了的旧电脑给了回收的人，没要钱——就是不想再搬了。你看着它被拎走，像看着一件穿了太久、已经不需要穿的衣服。你回到屋里，那台便宜的二手主机还在桌上，你按了一下电源键，它亮了。'
+      ],
+      actions: [
+        '写下你能做的事——不用给别人看，只需要写出来。',
+        '说一个数字。任何一个数字。不用合理，只需要是一个数字。',
+        '找一个你信任的人，说"如果你身边有人需要这个，帮我留意一下"。',
+        '完成一次有偿服务后，向对方问一句"你觉得这个值多少"。',
+        '用一个你愿意接受的价格完成一次交易。',
+        '你已经知道你能卖什么了。不是因为你找到了最好的答案，是因为你试过了。'
+      ]},
+    { id: 'T21', name: '面子撑死', core: '你花了很多钱维护一个形象，但那形象不是你的。',
+      lines: [
+        '你在朋友聚餐时抢着买了单，回出租屋的路上算了一下——这顿饭钱够你活一周。你走得很慢，不是因为饱，是因为你正在后悔。',
+        '你买了一双鞋，穿了一次就后悔了。它挤脚，但你已经穿出去过了，你没法退。这双鞋花了你四天的工资。你把它放回鞋盒里的时候，看见鞋盒里还放着上个月买的那双。',
+        '你接到一个聚会的邀请，第一反应是"又要花钱了"。你犹豫了一会儿，还是答应了。你告诉自己"偶尔一次"，但你知道上个月你也是这么说的。',
+        '你删掉了几条朋友圈。那些照片里的消费纪录加起来，是你这个月房租的两倍。你坐在那里，不知道自己是在记录生活，还是在替自己编一个生活。',
+        '你开始拒绝一些饭局了。你说"最近忙"，其实你是真的没钱了。你发现说实话比编理由难，但你说了第一次，发现天没有塌。',
+        '你不再需要发朋友圈来证明自己过得好了。你发现那种"让别人觉得我过得不错"的冲动，已经比上个月淡了很多——不是因为你在压抑，是因为你真的不那么在意了。'
+      ],
+      actions: [
+        '停3秒。下次有人叫你买单的时候，给自己3秒。',
+        '说一个真实的数字——你目前能承受的消费上限。',
+        '今天拒绝一次不必要的社交支出，不解释原因。',
+        '把一件不需要的"面子物品"处理掉——卖掉、送掉、收起来。',
+        '连续三天，每天记一笔"为面子花的钱"。看完别删。',
+        '你已经不需要用消费来确认自己的位置了。'
+      ]},
+    { id: 'D18', name: '持续失血', core: '收入在进，但钱总是不知不觉漏光了。你不知道那些洞在哪里。',
+      lines: [
+        '你查了一下账单，发现有一笔自动续费你忘了三个月了。你取消订阅的时候，看着那笔总额站了一会儿——够你吃十顿饭了。',
+        '你把最近的支出拉了一张表，发现最大的一笔不是房租，是你根本没印象的零碎消费。你盯着那个数字，觉得自己的手好像不是自己的。',
+        '你开始记账了。你打开手机银行，把每一笔支出都记下来，发现有一笔钱你已经不记得花在哪了。这个月不知道花在哪里的钱，已经累积到了六百块。',
+        '你把"不知道花在哪里的钱"单独列了一行。那个数字开始变小了——不是因为收入变多了，是因为你开始看见它了。',
+        '你发现自己能在月底的时候，说清楚这个月的钱去哪了。你不需要跟任何人汇报，但你知道了。',
+        '你发现漏掉的东西变少了。你把它从"漏"变成了"记下了"，虽然离"记住"还差一段距离。'
+      ],
+      actions: [
+        '查一下你所有的自动续费订阅，列一张清单。',
+        '把最近一个月最大的一笔非必要支出标出来。',
+        '开一个记账条目——"不知道花在哪里的钱"，把今天的记进去。',
+        '把这个条目缩减到上个月的一半，不管用什么方法。',
+        '连续三天，每天对一笔"没必要的支出"说"今天不花"。',
+        '你已经不再需要用记账来管住自己了。你的手已经知道了。'
+      ]},
+    { id: 'H13', name: '过度顺从', core: '你说"好的"说得太顺了。顺到忘了自己还有价格。',
+      lines: [
+        '同事让你帮忙做一份PPT，你答应了。你加班做到十一点，对方说"谢谢"的时候，你发现这个"谢谢"就是你全部的报酬了。',
+        '朋友找你借钱，你借了。你想着"他应该会还的"，但你写借条的时候手在抖——你知道他不会主动还。',
+        '你帮了一个人的忙，对方请你吃饭。你坐在饭桌上，发现你提供的服务值这顿饭的十倍。你什么都没说，把饭吃了。',
+        '你教别人做你做的事，教完之后，对方说"以后有活找你"。你发现你把自己的活儿教给了抢你活儿的人。',
+        '你开始主动划边界了。你告诉别人"这些事我帮不了"、"这个时间我不行"。你说出口之后，发现对方没有追问。',
+        '你已经不需要练习说"不"了。你发现自己多出来的时间，用在了能换成收入的事情上。'
+      ],
+      actions: [
+        '写下最近一次你答应但不想做的事——只写，不分析。',
+        '今天对一个人说一个很小的"不"——"这个时间我不行"。',
+        '说"不"之后，不追加解释。让"不"自己站在那儿。',
+        '连续两天，每天说一次"不"——对两件不同的事。',
+        '当对方追问"为什么"的时候，你只说"就是不行的"。',
+        '"不"已经变成一个自然的词了。你说它不需要提前准备了。'
+      ]},
+    { id: 'H15', name: '涣散失焦', core: '你有很多想法，但没有一个变成钱。你在起点反复出发。',
+      lines: [
+        '你今天又开了十几个网页。你在它们之间来回切换，每一个都没有看完。你关掉浏览器的时候，发现自己已经想不起最初打开它是因为哪一个页面了。',
+        '你收藏了一堆"赚钱方法"，一个都没试过。你想着"等准备好了再开始"，但你也不知道准备到什么程度算够。',
+        '你开始做了一个小项目，做到一半觉得方向不对，又换了一个。你换了三次，一个都没做到能拿出来见人的程度。',
+        '你把之前做了一半的东西翻出来看了看，发现其实没有你记忆中那么差。你坐在那里想了十分钟，不知道该继续还是该放弃。',
+        '你选了一个方向，做完了第一版。它不完美，但你做完了一版，这比之前的你都强。',
+        '你发现"完成一版"比"想十个方向"更有用。你不再需要靠想法来证明自己能行了。'
+      ],
+      actions: [
+        '写三个你被人夸过的事——不筛选，不判断。',
+        '从三件事里选一件最不费劲的，给它起一个名字。',
+        '把这件事以最简单的形式做一次——不完美，不完整，只做一次。',
+        '把这次的结果展示给一个人看。不卖，只需要知道能不能被识别。',
+        '根据反馈改一个地方，然后做第二次。只改一个地方。',
+        '你已经知道你能做什么了。不是找到了最好的答案，是试过了。'
+      ]}
+  ],
+  health: [
+    { id: 'D5', name: '过载崩塌', core: '你已经超负荷运转太久了。身体在用症状问你——你准备听到了吗？',
+      lines: [
+        '你发现连续几周每天睡眠不到五小时，早上醒来的第一反应不是"新的一天开始了"，而是"今天又要应付完"。',
+        '你请了半天假，但一直在看手机。你坐在医院椅子上等叫号，回了七条工作消息，叫号的时候还在想要不要再检查一遍。',
+        '你直接不回复了。你看着那条消息，读完了，然后把手机翻过去，屏幕朝下。你坐在那里等了十五分钟，手机没有再亮。',
+        '你删掉了几个App。你看着手机桌面变空了，把剩下几个App的推送也关掉了。你把手机放在桌上，屏幕朝上——没有新的通知。',
+        '你在医院坐了一天。你没有打开工作群，没有回任何消息。回去的路上，你一直看着窗户外面的街道。',
+        '你下班了，走出大楼的时候没有看手机。你今晚设了一个闹钟，不是提醒你开会，是提醒你关灯。'
+      ],
+      actions: [
+        '今晚提前15分钟放下手机，放在另一个房间充电。',
+        '今晚把手机放在床以外的地方。不要求早睡，只要求多走两步才能拿到。',
+        '提前20分钟放下所有屏幕。不是早睡，是早点停止输入。',
+        '连续3天执行"睡前1小时无屏幕"。三天后你有新数据。',
+        '连续7天睡眠在7小时以上——白天没那么困了，可以停止检查了。',
+        '你不再计算睡眠时间了。你的身体学会了在需要的时候困。'
+      ]},
+    { id: 'H8', name: '停滞钝化', core: '你太久没动了。你忘了"动"是什么感觉。',
+      lines: [
+        '你今天几乎没有离开过这张椅子。等到窗外的天色变暗了，你才发现已经过去一整个白天了。你站起来的时候，腿有点麻。',
+        '你看到手机上的消息，没有回。你看到墙角的灰尘，想着"等会儿再擦"。窗外的风灌进来，你感觉到了，但没有站起来去关窗。',
+        '你已经很久没有主动联系过人了。你打开通讯录，翻了一下，想着"算了，也没什么好说的"，又关上了。',
+        '你被推了一次——有一件事不得不做。你做完之后，发现自己还能动。你发现自己只是在害怕"开始"本身。',
+        '你开始做一件很小的事了。你做完了，发现没有想象中那么难。你做完了，然后发现你已经不需要停下来庆祝了。',
+        '你发现了今天的自己能做的事比昨天多了一点。你呼吸的时候肩膀是垂下去的——你已经很久没有注意过肩膀了。'
+      ],
+      actions: [
+        '站起来一次，走3步，然后坐下。不是运动，是打断"坐着"一次。',
+        '设定一个计时器，每坐45分钟站起来一次。不要求走，只要求中断。',
+        '站起来之后，做三个伸展动作——伸手向上、左右转身、弯腰触地。',
+        '连续两天，每天完成一次"站起来+走30步"。',
+        '连续5天，每天至少有一次"站起来走动超过2分钟"的记录。',
+        '你不再计算"今天有没有站起来"了。身体会在坐久之后自动提醒你。'
+      ]},
+    { id: 'H14', name: '愉悦上瘾', core: '你不用食物/屏幕/物质麻痹自己就撑不下去。你停不下来。',
+      lines: [
+        '你又刷了一整晚的视频。你关掉的时候，发现已经凌晨两点了。你告诉自己"明天不这样了"，但你知道你明天还是会这样。',
+        '你又在用食物来让自己舒服了。你吃完之后，发现你其实不饿。你发现你吃东西的时候，脑子里在想别的事——你在回避什么。',
+        '你又在用买东西来让自己好受了。你拆快递的时候，发现自己已经不太记得买了什么了。你看着那些东西，想着"我只是想买点什么"。',
+        '你做了一件事，没有发到任何平台。你做完之后，发现自己没有在想要不要分享它。你发现"做完"和"被人看到"之间的距离，比你想象的要宽。',
+        '你放下手机，坐在床边。你发现你确实在用它们来避开某种疲惫。你发现你已经不想避开它了。你想去睡一下。',
+        '你发现自己已经不再需要那些短暂的逃避了。你能够安静地坐一会儿，不刷手机，不吃东西——只是坐着。'
+      ],
+      actions: [
+        '今晚某次拿起手机准备刷的时候，先停3秒——不放下，不开始，只是停。',
+        '在下次想吃/刷/买之前，先问自己一句"我现在在想什么"——不需要回答。',
+        '今天选一个你平时会用麻痹来回避的时刻，换一个动作——起身去倒水、走出房间一分钟。',
+        '做一件你可以发到社交媒体上的事，但没有发出去。做完之后安静待着。',
+        '手机放在客厅，你躺下了。你不需要用任何东西来填充这十几分钟。',
+        '你已经很久没有用进食/屏幕/物质来填充一个空白时刻了。你可以在空白里待着了。'
+      ]}
+  ],
+  relation: [
+    { id: 'D14', name: '亲情绑架', core: '你被家人用"应该"和"必须"捆住了。每一个"你是唯一的希望"都是一根更紧的绳。',
+      lines: [
+        '你接到家里的电话，在电话里说"好"。挂断之后，你发现自己又答应了一件事。你站在窗前，看到楼下有人在散步，步子很慢。',
+        '你在饭桌上又听到了那句"你是家里唯一的希望"。你低头夹菜，没有接话。你把碗放进水槽，打开了水龙头。',
+        '你拒绝了。你说"这次我真的帮不了"。电话那头安静了一会儿，然后说"那我自己想办法"。你挂了电话，发现自己没有内疚。',
+        '你开始设底线了。你告诉对方哪些事你能做，哪些事你不能再做了。你说完之后，发现自己没有解释为什么。',
+        '你发现对方在试着尊重你的界限了。你听到他们说"这件事我自己来就行"。你停了一下，说"好"。',
+        '你站在自己的边界内。你帮他们做了一件事，做完之后，发现自己没有在算"我该不该做"。你知道那是你想做的，不是因为你必须。'
+      ],
+      actions: [
+        '今天不接一个电话——只选一个，就只回避这一个。',
+        '当对方再次提出要求时，你只说"我再想想"。不答应，不拒绝。',
+        '说一次"不"——对对方提出的一个小要求，说"这个我做不了"。',
+        '设立一条明确的底线——告诉对方"这件事我不能做"。',
+        '当对方试图越过底线时，你再说一次"不行"——你的声音没有发抖。',
+        '你已经不需要再练习设底线了。你发现对方已经学会了尊重你的边界。'
+      ]},
+    { id: 'H12', name: '漂泊无根', core: '你在一个地方待了很久，但没有扎下根。你随时可以消失。',
+      lines: [
+        '你搬了三次家，每次都是一个人。你收拾行李的时候发现，你所有的东西两个箱子就装完了。你看着那两个箱子，不知道自己是在生活还是在寄存。',
+        '你走在街上，看到一家店的老板在跟熟客聊天。你走了过去，没有人叫住你。你继续走了，没有回头。',
+        '你填表的时候在"籍贯"那一栏停了一下。你不知道该写哪——那个地方你已经不回去了，这里也不是。你写了一个地名，感觉像在写别人的地址。',
+        '你在这个城市有了一些固定的去处——常去的便利店、固定的理发师、同一家早餐摊。你发现你开始被认出来了。',
+        '你帮楼下保安开了一次门，他跟你说了声"下班啦"。你点了点头，发现你在笑——你以为自己没在笑。',
+        '你不再需要问"我属于哪里"了。你发现归属不是被给予的——你在的地方，就是你的地方。'
+      ],
+      actions: [
+        '在今天的某个时候，停在一个地方，对自己说一句："我在这里。"',
+        '把房间里的三样东西，移到你觉得"它们该在"的位置。',
+        '在这个城市里找一个你可以免费停留的地方——坐10分钟。',
+        '在常去的店里点同一个东西，让它开始"认出你"。',
+        '连续一周，每天在同一时间回到同一个地方待15分钟。',
+        '你不再问"我属于哪里"了。你在的地方，就是你的地方。'
+      ]}
+  ],
+  order: [
+    { id: 'H1', name: '身份迷失', core: '你不知道自己是谁。旧的标签已经脱落，新的还没有长出来。',
+      lines: [
+        '你填表的时候，在"职业"那一栏停了很久。你写了一个词，划掉了，又写了另一个词。最后你写了一个你很久没用过的头衔。',
+        '你删掉了自己的社交账号简介。光标一直在闪。你打了几个字，又删掉了。你发现自己已经不知道该用什么词来介绍自己了。',
+        '你听到有人说"你就是那个做XX的人"，你想说"我已经不是了"，但你只是点了点头。你发现自己已经不需要用别人的定义来填空了。',
+        '你开始做一件新的事。你写在纸上的时候，发现"职业"那一栏你已经可以不填了。你发现自己已经不再需要用头衔来确认位置了。',
+        '你在介绍自己的时候，没有说职位。你说"我最近在做XX"。你说这句话的时候，没有在等别人接"那你原来是做什么的"。',
+        '你不需要再定义自己了。你站在自己做过的事情里。你写了一个词，只写了一个词，然后直接翻到了下一页。'
+      ],
+      actions: [
+        '写下一个你曾经是但现在已经不是的身份。就写一个。',
+        '写下"我曾经是______"，填一个词。下面写"我现在是______"——第二个空着。',
+        '问一个人"你觉得我是怎样的人"——不解释为什么问。',
+        '把你喜欢做的三件事写下来——不是"擅长"，是"喜欢"。',
+        '用"我喜欢______，而不是______"写一句话。',
+        '你已经在做你喜欢的事了。你在做的时候不会问"这算不算我"。'
+      ]},
+    { id: 'H11', name: '丰盛虚无', core: '你什么都有了，但什么都不重要。你站在山顶上，发现山顶是平的。',
+      lines: [
+        '你拿到了那个你追了三年的结果。你看着那封通知，发现心里没有波澜。你把它放在桌上，继续做你刚才在做的事——吃完那碗面。',
+        '别人说"你已经很成功了"，你点了点头。你发现你点头不是因为同意，是因为你懒得解释。',
+        '你躺在沙发上刷手机，看到别人在晒收入、晒房、晒车。你都有。但你发现你并不羡慕他们——你是不知道自己还该想要什么了。',
+        '你试着找了一件新的事来做。做了一半，你发现你知道它的尽头是什么样的了。你没有继续。',
+        '你停下来，坐在那里，没有刷手机，没有想下一步。你发现自己已经很久没有这样停过了。你想着："我是不是真的可以什么都不做。"',
+        '你发现"重要"不再需要别人来定义了。你知道哪些事对你来说重要，哪怕全世界只有你一个人在乎。'
+      ],
+      actions: [
+        '今天只做一件事——做一件你自己想做的、不需要别人知道的事。',
+        '做这件事的时候不赶时间。做完之后，感受一下那几秒钟。',
+        '选一件你很久没做但以前喜欢的事——做5分钟。',
+        '创造一件只属于你自己的小事。它是你为自己设定的秩序。',
+        '连续三天，每天做一件"不需要被人知道"的事。',
+        '你发现"重要"不再需要别人来定义了。你的心里已经有了一把尺子。'
+      ]}
+  ],
+  action: [
+    { id: 'D9', name: '惯性困守', core: '你知道现状不对，但你改不了。你已经在一套旧模式里走了太久。',
+      lines: [
+        '你走回同一个路口，又拐进了同一条街。你站在那家你常去的便利店门口，手里拿着的饮料跟你上周买的是同一款。你在想，是它好喝，还是你只是没试过别的。',
+        '你又在同一件事上绕了一天。你把之前的那份方案再修改了一遍，调整了几个数字的排列顺序。你把新版本存了，重命名成"待定_3"。',
+        '你发现你一直在同一件事情上试了第三遍了。你打开那份材料，光标停在同一个位置。它在你脑子里已经成型了，但你始终没有写一个新的版本。',
+        '你换了一个方法。你从零开始写。你发现自己写出来的东西和上次不一样——措辞不一样了，开头的角度也变了。',
+        '你走到了一条新的路上。你走完了，发现结果跟原来的路不太一样——不是更好，也不是更差，是不同。',
+        '你发现自己已经在新的节奏里了。你走到需要选择的时候，发现自己已经在走另一条路了。你的步子在每一个转弯处都没有犹豫。'
+      ],
+      actions: [
+        '在一件最小的日常事上换一个选项——走另一条路回家、买一个你没喝过的饮料。',
+        '在一件你一直在做的事上，尝试一种你不常用的做法。顺序调换、工具换掉。',
+        '选一件你已经做了很久的事，停下来一天，不碰它。不是解决，是观察。',
+        '重新做一次，但不参考之前做过的任何版本。你的手已经不在原来的惯性里了。',
+        '走完新方向的一个完整回合——从开始到结束，不中途退回到旧方法。',
+        '你已经在走了。你已经不需要再确认方向了。'
+      ]},
+    { id: 'D20', name: '决断瘫痪', core: '你一直在等"对的时机"。但你心里知道，那个时机不会来。',
+      lines: [
+        '你有两个选择，你列了一张对比表。你填了半张就停了，因为你知道填完之后你还是决定不了。',
+        '你问了三个人，得到了三个不同的答案。你发现你问的人越多，你越不知道怎么选。你坐在那里，等着第四个人出现。',
+        '你把那个决定推迟了一周。一周后你又推迟了一周。你发现自己不是在等更好的选项，你是在等"一个不会错的选项"——那不存在。',
+        '你闭着眼睛选了一个。选完之后你没有后悔——你发现你害怕的不是选错，是选了之后没有退路。你现在知道退路是自己给的。',
+        '你做了一个决定，然后执行了它。你没告诉任何人——因为不需要确认。你发现自己选完之后，原来不确定的东西，在往前走的过程中慢慢清晰了。',
+        '你不再需要"对的时机"了。你发现时机不是等来的，是你在走的过程中踏出来的。'
+      ],
+      actions: [
+        '把两个选项各写一行。然后划掉一个——用笔划掉。',
+        '找一个你信任的人，告诉他你的两个选项，然后抛硬币。',
+        '选一个，执行一天。明天你可以换。今天先做这一个。',
+        '连续两天，每天执行你选的那个方向的一个最小动作。',
+        '连续五天，每天走同一条路。五天之后你已经有数据了。',
+        '你发现时机不是等来的。是你走出来的。'
+      ]}
+  ]
+};
+
+// ==================== QUIZ LOGIC ====================
+
+let state = { step: 0, answers: [] };
+const totalSteps = 4;
+
+function getModuleKeys() { return Object.keys(MODULES); }
+
+function initQuiz() {
+  state = { step: 0, answers: [] };
+  document.getElementById('questionContainer').style.display = 'block';
+  document.getElementById('resultSection').classList.remove('active');
+  renderProgress();
+  renderStep();
+}
+
+function renderProgress() {
+  const bar = document.getElementById('progressBar');
+  bar.innerHTML = '';
+  for (let i = 0; i < totalSteps; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'progress-dot';
+    if (i < state.step) dot.classList.add('done');
+    else if (i === state.step) dot.classList.add('active');
+    bar.appendChild(dot);
+  }
+}
+
+function renderStep() {
+  renderProgress();
+  const container = document.getElementById('questionContainer');
+  container.innerHTML = '';
+  const q = document.createElement('div');
+  q.className = 'question active';
+
+  if (state.step === 0) renderStep0(q);
+  else if (state.step === 1) renderStep1(q);
+  else if (state.step === 2) renderStep2(q);
+  else if (state.step === 3) renderStep3(q);
+
+  container.appendChild(q);
+}
+
+// Step 0: Module selection
+function renderStep0(q) {
+  q.innerHTML = `
+    <h2>你现在最困扰的是什么？</h2>
+    <p class="sub">选一个最接近你的状态。这不是最终答案，是入口。</p>
+    <div class="options">
+      <div class="option" data-value="economy" onclick="selectOption(this,'economy')">
+        我没钱 / 钱不够<span class="desc">收入在缩、负债、不知道靠什么赚钱</span>
+      </div>
+      <div class="option" data-value="health" onclick="selectOption(this,'health')">
+        我的身体在拖累我<span class="desc">长期疲劳、失眠、动不了、身体在报警</span>
+      </div>
+      <div class="option" data-value="relation" onclick="selectOption(this,'relation')">
+        我身边的人在消耗我<span class="desc">被绑架、孤独、害怕社交、讨好</span>
+      </div>
+      <div class="option" data-value="order" onclick="selectOption(this,'order')">
+        我不知道自己想要什么<span class="desc">身份迷失、意义空虚、漂泊、全面困顿</span>
+      </div>
+      <div class="option" data-value="action" onclick="selectOption(this,'action')">
+        我知道该做什么但动不了<span class="desc">拖延、惯性绕圈、害怕做错、无法完成</span>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnNext0" disabled onclick="nextStep()">下一步</button>
+    </div>
+  `;
+}
+
+// Step 1: 困卦 selection based on module
+function renderStep1(q) {
+  const moduleKey = state.answers[0];
+  const moduleData = DATA[moduleKey];
+  const moduleInfo = MODULES[moduleKey];
+
+  let optionsHTML = '';
+  moduleData.forEach((gua, idx) => {
+    optionsHTML += `
+      <div class="option" data-value="${idx}" onclick="selectOption(this,${idx})">
+        ${gua.name}<span class="desc">${gua.core}</span>
+      </div>
+    `;
+  });
+
+  q.innerHTML = `
+    <h2>在「${moduleInfo.name}」里，你最像哪种？</h2>
+    <p class="sub">不是判断对错，选那个让你心里"嗯"了一下的。</p>
+    <div class="options">${optionsHTML}</div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep()">上一步</button>
+      <button class="btn btn-primary" id="btnNext1" disabled onclick="nextStep()">下一步</button>
+    </div>
+  `;
+}
+
+// Step 2: 爻辞 selection
+function renderStep2(q) {
+  const moduleKey = state.answers[0];
+  const guaIdx = state.answers[1];
+  const gua = DATA[moduleKey][guaIdx];
+
+  let optionsHTML = '';
+  gua.lines.forEach((line, idx) => {
+    const preview = line.length > 60 ? line.slice(0, 60) + '……' : line;
+    optionsHTML += `
+      <div class="option" data-value="${idx}" onclick="selectOption(this,${idx})">
+        ${preview}
+        <span class="tag">爻${['初','二','三','四','五','上'][idx]}</span>
+      </div>
+    `;
+  });
+
+  q.innerHTML = `
+    <h2>哪句话最像你现在的状态？</h2>
+    <p class="sub">不用选最精准的，选那个让你点了头的。</p>
+    <div class="options">${optionsHTML}</div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep()">上一步</button>
+      <button class="btn btn-primary" id="btnNext2" disabled onclick="nextStep()">看结果</button>
+    </div>
+  `;
+}
+
+// Step 3: Result (simulated - collected by nextStep)
+function renderStep3(q) {
+  showResult();
+}
+
+// Navigation
+function selectOption(el, value) {
+  const parent = el.closest('.options') || el.parentElement;
+  parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  state.answers[state.step] = value;
+
+  // Enable next button
+  const btnId = ['btnNext0', 'btnNext1', 'btnNext2'][state.step];
+  if (btnId) {
+    const btn = document.getElementById(btnId);
+    if (btn) btn.disabled = false;
+  }
+}
+
+function nextStep() {
+  if (state.step === 2) {
+    // Show result
+    showResult();
+    return;
+  }
+  state.step++;
+  renderStep();
+}
+
+function prevStep() {
+  if (state.step === 0) return;
+  state.step--;
+  state.answers.pop();
+  renderStep();
+}
+
+// Result
+function showResult() {
+  document.getElementById('questionContainer').style.display = 'none';
+  const section = document.getElementById('resultSection');
+  section.classList.add('active');
+
+  const moduleKey = state.answers[0];
+  const guaIdx = state.answers[1];
+  const lineIdx = state.answers[2];
+  const gua = DATA[moduleKey][guaIdx];
+  const moduleInfo = MODULES[moduleKey];
+  const posNames = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
+
+  document.getElementById('resultTitle').textContent = `${gua.name} · ${posNames[lineIdx]}`;
+  document.getElementById('resultSubtitle').textContent = `你卡在「${moduleInfo.name}」的 ${gua.name}·${posNames[lineIdx]}`;
+  document.getElementById('resultDiagnosis').textContent = gua.lines[lineIdx];
+  document.getElementById('resultAction').textContent = '→ ' + gua.actions[lineIdx];
+}
+
+function resetQuiz() {
+  initQuiz();
+}
+
+function shareResult() {
+  const text = `我测了破困定位，卡在「${document.getElementById('resultTitle').textContent}」。`;
+  if (navigator.share) {
+    navigator.share({ title: '破困定位', text: text, url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(text + ' ' + window.location.href);
+    alert('已复制结果，可以分享给朋友了');
+  }
+}
+
+// Init
+initQuiz();
+</script>
+</body>
+</html>
